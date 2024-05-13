@@ -1,6 +1,11 @@
 import React from 'react';
-import { Button } from '../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
+
+interface ShowPasswordButtonProps {
+  isVisable: boolean;
+  setIsVisable: (value: React.SetStateAction<boolean>) => void;
+}
 
 export default function ShowPasswordButton({ isVisable, setIsVisable }: ShowPasswordButtonProps) {
   return (

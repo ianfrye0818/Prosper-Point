@@ -2,6 +2,10 @@ import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 
+declare interface AuthFormHeaderProps extends AuthFormProps {
+  user: any;
+}
+
 export default function AuthFormHeader({ type, user }: AuthFormHeaderProps) {
   return (
     <header className='flex flex-col gap-5 md:gap-8'>

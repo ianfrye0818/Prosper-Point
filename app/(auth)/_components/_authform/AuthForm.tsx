@@ -8,23 +8,44 @@ import ZodFormFieldInput from '../_common/ZodFormFieldInput';
 import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
 import AuthFormSubmitButton from './AuthFormSubmitButton';
 import AuthFormHeader from './AuthFormHeader';
+import AuthFormFooter from './AuthFormFooter';
+import SignUpFormFields from './SignUpForm';
+import { useRouter } from 'next/navigation';
+import { signIn, signUp } from '@/lib/actions/user.actions';
 
 export default function AuthForm({ type }: AuthFormProps) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const form = useForm({
-    resolver: zodResolver(AUTH_FORM_SCHEMA),
+  const formSchema = AUTH_FORM_SCHEMA(type);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof AUTH_FORM_SCHEMA>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    console.log(values);
-    setIsLoading(false);
+
+    try {
+      //sign up with Appwright and create a plaid token
+
+      if (type === 'sign-up') {
+        const newUser = await signUp(data);
+        setUser(newUser);
+      } else if (type === 'sign-in') {
+        const response = await signIn(data.email, data.password);
+        if (response) router.push('/');
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -36,32 +57,37 @@ export default function AuthForm({ type }: AuthFormProps) {
       {user ? (
         <div className='flex flex-col gap-4'>{/* TODO: Plaid Link */}</div>
       ) : (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-8'
-          >
-            {/* email input */}
-            <ZodFormFieldInput
-              name='email'
-              label='email'
-              placeholder='example@example.com'
-              control={form.control}
-            />
-            {/* password input */}
-            <ZodFormFieldInput
-              name={'password'}
-              label='password'
-              placeholder='******'
-              control={form.control}
-            />
-            {/* Submit button */}
-            <AuthFormSubmitButton
-              type={type}
-              isLoading={isLoading}
-            />
-          </form>
-        </Form>
+        <>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='space-y-8'
+            >
+              {type === 'sign-up' && <SignUpFormFields form={form} />}
+
+              {/* email input */}
+              <ZodFormFieldInput
+                name='email'
+                label='Email'
+                placeholder='example@example.com'
+                control={form.control}
+              />
+              {/* password input */}
+              <ZodFormFieldInput
+                name={'password'}
+                label='Password'
+                placeholder='******'
+                control={form.control}
+              />
+              {/* Submit button */}
+              <AuthFormSubmitButton
+                type={type}
+                isLoading={isLoading}
+              />
+            </form>
+          </Form>
+          <AuthFormFooter type={type} />
+        </>
       )}
     </section>
   );

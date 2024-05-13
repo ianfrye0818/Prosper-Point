@@ -1,8 +1,19 @@
 import { useState } from 'react';
-import { FormField, FormLabel, FormControl, FormMessage } from '../../../../components/ui/form';
-import { Input } from '../../../../components/ui/input';
+import { FormField, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import ShowPasswordButton from '../_authform/AuthFormShowPasswordButton';
-import { FormInputProps } from '@/types';
+import * as z from 'zod';
+import { FieldPath, Control } from 'react-hook-form';
+import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
+
+const formSchema = AUTH_FORM_SCHEMA('sign-up');
+
+interface FormInputProps {
+  label?: string;
+  placeholder?: string;
+  name: FieldPath<z.infer<typeof formSchema>>;
+  control: Control<z.infer<typeof formSchema>>;
+}
 
 export default function ZodFormFieldInput({ label, placeholder, name, control }: FormInputProps) {
   const [isVisable, setIsVisable] = useState(false);

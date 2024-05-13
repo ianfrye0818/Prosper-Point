@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
-import * as z from 'zod';
 
 declare type SearchParamProps = {
   params: { [key: string]: string };
@@ -186,26 +184,6 @@ declare interface PlaidLinkProps {
 
 declare interface AuthFormProps {
   type: 'sign-in' | 'sign-up';
-}
-
-declare interface AuthFormHeaderProps extends AuthFormProps {
-  user: any;
-}
-
-declare interface AuthFormSubmitButtonProps extends AuthFormProps {
-  isLoading: boolean;
-}
-
-declare interface ShowPasswordButtonProps {
-  isVisable: boolean;
-  setIsVisable: (value: React.SetStateAction<boolean>) => void;
-}
-
-declare interface FormInputProps {
-  label?: string;
-  placeholder?: string;
-  name: FieldPath<z.infer<typeof AUTH_FORM_SCHEMA>>;
-  control: Control<z.infer<typeof AUTH_FORM_SCHEMA>>;
 }
 
 declare interface BankDropdownProps {
