@@ -6,36 +6,22 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  useFormField,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Divide } from 'lucide-react';
-
-const formSchema = z.object({
-  email: z.string().email('Please enter a valid password'),
-  password: z.string(),
-});
+import { Form } from '@/components/ui/form';
+import ZodFormFieldInput from './ZodFormFieldInput';
+import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
 
 export default function AuthForm({ type }: AuthFormProps) {
   const [user, setUser] = useState(null);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(AUTH_FORM_SCHEMA),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof AUTH_FORM_SCHEMA>) {
     console.log(values);
   }
 
@@ -71,48 +57,26 @@ export default function AuthForm({ type }: AuthFormProps) {
             onSubmit={form.handleSubmit(onSubmit)}
             className='space-y-8'
           >
-            <FormField
-              control={form.control}
+            <ZodFormFieldInput
               name='email'
-              render={({ field }) => (
-                <div className='form-item'>
-                  <FormLabel className='form-label'>Email</FormLabel>
-                  <div className='flex w-full flex-col'>
-                    <FormControl>
-                      <Input
-                        placeholder='Enter your Email'
-                        className='input-class'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className='form-message' />
-                  </div>
-                </div>
-              )}
-            />
-
-            <FormField
+              label='email'
+              placeholder='example@example.com'
               control={form.control}
-              name='password'
-              render={({ field }) => (
-                <div className='form-item'>
-                  <FormLabel className='form-label'>Password</FormLabel>
-                  <div className='flex w-full flex-col'>
-                    <FormControl>
-                      <Input
-                        type='password'
-                        placeholder='Enter your password'
-                        className='input-class'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className='form-message' />
-                  </div>
-                </div>
-              )}
             />
 
-            <Button type='submit'>Submit</Button>
+            <ZodFormFieldInput
+              name={'password'}
+              label='password'
+              placeholder='******'
+              control={form.control}
+            />
+
+            <Button
+              variant={'outline'}
+              type='submit'
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       )}
