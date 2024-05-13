@@ -1,6 +1,6 @@
-import HeaderBox from '@/components/HeaderBox';
-import RightSidebar from '@/components/RightSidebar';
-import TotalBalanceBox from '@/components/TotalBalanceBox';
+import HeaderBox from '@/app/(root)/_components/_common/HeaderBox';
+import RightSidebar from '@/app/(root)/_components/_nav/RightSidebar';
+import TotalBalanceBox from '@/app/(root)/_components/_common/TotalBalanceBox';
 import React from 'react';
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
       <RightSidebar
         user={loggedIn}
         transactions={[]}
-        banks={[{ currentBalance: 12.5 }, { currentBalance: 550.0 }]}
+        banks={[{ currentBalance: 1250.15 }, { currentBalance: 550.0 }]}
       />
     </section>
   );

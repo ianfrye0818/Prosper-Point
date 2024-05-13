@@ -1,7 +1,7 @@
-import MobileNavBar from '@/components/MobileNavBar';
-import Sidebar from '@/components/Sidebar';
 import Image from 'next/image';
 import React, { PropsWithChildren } from 'react';
+import Sidebar from './_components/_nav/Sidebar';
+import MobileNavBar from './_components/_nav/MobileNavBar';
 
 export default function RootLayout({ children }: PropsWithChildren) {
   const loggedIn = {

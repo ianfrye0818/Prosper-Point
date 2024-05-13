@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
+import * as z from 'zod';
 
 declare type SearchParamProps = {
   params: { [key: string]: string };
@@ -91,14 +93,9 @@ declare type Bank = {
   sharableId: string;
 };
 
-declare type AccountTypes =
-  | "depository"
-  | "credit"
-  | "loan "
-  | "investment"
-  | "other";
+declare type AccountTypes = 'depository' | 'credit' | 'loan ' | 'investment' | 'other';
 
-declare type Category = "Food and Drink" | "Travel" | "Transfer";
+declare type Category = 'Food and Drink' | 'Travel' | 'Transfer';
 
 declare type CategoryCount = {
   name: string;
@@ -145,11 +142,11 @@ declare interface CreditCardProps {
 declare interface BankInfoProps {
   account: Account;
   appwriteItemId?: string;
-  type: "full" | "card";
+  type: 'full' | 'card';
 }
 
 declare interface HeaderBoxProps {
-  type?: "title" | "greeting";
+  type?: 'title' | 'greeting';
   title: string;
   subtext: string;
   user?: string;
@@ -174,7 +171,7 @@ declare interface PaginationProps {
 
 declare interface PlaidLinkProps {
   user: User;
-  variant?: "primary" | "ghost";
+  variant?: 'primary' | 'ghost';
   dwollaCustomerId?: string;
 }
 
@@ -188,7 +185,27 @@ declare interface PlaidLinkProps {
 // };
 
 declare interface AuthFormProps {
-  type: "sign-in" | "sign-up";
+  type: 'sign-in' | 'sign-up';
+}
+
+declare interface AuthFormHeaderProps extends AuthFormProps {
+  user: any;
+}
+
+declare interface AuthFormSubmitButtonProps extends AuthFormProps {
+  isLoading: boolean;
+}
+
+declare interface ShowPasswordButtonProps {
+  isVisable: boolean;
+  setIsVisable: (value: React.SetStateAction<boolean>) => void;
+}
+
+declare interface FormInputProps {
+  label?: string;
+  placeholder?: string;
+  name: FieldPath<z.infer<typeof AUTH_FORM_SCHEMA>>;
+  control: Control<z.infer<typeof AUTH_FORM_SCHEMA>>;
 }
 
 declare interface BankDropdownProps {
