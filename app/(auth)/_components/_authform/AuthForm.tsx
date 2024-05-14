@@ -10,7 +10,7 @@ import AuthFormSubmitButton from './AuthFormSubmitButton';
 import AuthFormHeader from './AuthFormHeader';
 import AuthFormFooter from './AuthFormFooter';
 import SignUpFormFields from './SignUpForm';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { signIn, signUp } from '@/lib/actions/user.actions';
 
 export default function AuthForm({ type }: AuthFormProps) {
@@ -32,14 +32,15 @@ export default function AuthForm({ type }: AuthFormProps) {
     setIsLoading(true);
 
     try {
-      //sign up with Appwright and create a plaid token
-
+      if (type === 'sign-in') {
+        const user = await signIn(data.email, data.password);
+        setUser(user);
+        router.push('/');
+      }
       if (type === 'sign-up') {
         const newUser = await signUp(data);
         setUser(newUser);
-      } else if (type === 'sign-in') {
-        const response = await signIn(data.email, data.password);
-        if (response) router.push('/');
+        router.push('/');
       }
     } catch (error) {
       console.error(error);
