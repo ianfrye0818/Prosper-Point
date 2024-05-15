@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { sidebarLinks } from '@/constants';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import SideBarFooter from './SideBarFooter';
 
 export default function Sidebar({ user }: SiderbarProps) {
   const pathName = usePathname();
@@ -48,7 +49,7 @@ export default function Sidebar({ user }: SiderbarProps) {
         })}
         USER
       </nav>
-      FOOTER
+      <SideBarFooter user={user} />
     </section>
   );
 }

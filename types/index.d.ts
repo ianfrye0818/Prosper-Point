@@ -33,6 +33,7 @@ declare type User = {
   dwollaCustomerId: string;
   firstName: string;
   lastName: string;
+  name: string;
   address1: string;
   city: string;
   state: string;
@@ -182,6 +183,17 @@ declare interface PlaidLinkProps {
 //   image: string;
 // };
 
+declare type AppwriteUser = {
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  accountId: string;
+  email: string;
+  name: string;
+  items: string[];
+  accessToken: string;
+  image: string;
+};
 declare interface AuthFormProps {
   type: 'sign-in' | 'sign-up';
 }
@@ -205,6 +217,7 @@ declare interface TotlaBalanceBoxProps {
 
 declare interface FooterProps {
   user: User;
+  type: 'desktop' | 'mobile';
 }
 
 declare interface RightSidebarProps {

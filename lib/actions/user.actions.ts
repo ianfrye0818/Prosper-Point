@@ -4,9 +4,9 @@ import { createAdminClient, createSessionClient } from '../server/appwrite';
 import { cookies } from 'next/headers';
 import { parseStringify } from '../utils';
 
-export async function signIn(email: string, password: string) {
+export async function signIn({ email, password }: signInProps) {
   try {
-    const { account } = await createSessionClient();
+    const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
     cookies().set('auth-session', session.secret, {
       httpOnly: true,
@@ -40,10 +40,22 @@ export async function signUp(userData: SignUpParams) {
   }
 }
 
+export async function signOut() {
+  try {
+    const { account } = await createSessionClient();
+    await account.deleteSession('current');
+    cookies().delete('auth-session');
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    return await account.get();
+    const user = await account.get();
+    return parseStringify(user);
   } catch (error) {
     return null;
   }

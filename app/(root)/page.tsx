@@ -7,7 +7,7 @@ import { getLoggedInUser } from '@/lib/actions/user.actions';
 export default async function Home() {
   const loggedIn = { firstName: 'Ian', lastName: 'Frye', email: 'ianfrye@gmail.com' };
   const user = await getLoggedInUser();
-  console.log('user: ', user);
+  console.log(user);
   return (
     <section className='home'>
       <div className='home-content'>
@@ -15,7 +15,7 @@ export default async function Home() {
           <HeaderBox
             type='greeting'
             title='Welcome'
-            user={loggedIn ? loggedIn.firstName : 'Guest'}
+            user={user ? user.name : 'Guest'}
             subtext='Access and manage your account and transactions effeciently'
           />
           <TotalBalanceBox
@@ -27,7 +27,7 @@ export default async function Home() {
         RECENT TRANSACTIONS
       </div>
       <RightSidebar
-        user={loggedIn}
+        user={user}
         transactions={[]}
         banks={[{ currentBalance: 1250.15 }, { currentBalance: 550.0 }]}
       />

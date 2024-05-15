@@ -4,19 +4,22 @@ import React from 'react';
 import BankCard from '../BankCard';
 
 export default function RightSidebar({ banks, transactions, user }: RightSidebarProps) {
+  const { name } = user;
+  const firstName = name.split(' ')[0];
+  const lastName = name.split(' ')[1];
   return (
     <aside className='right-sidebar'>
       <section className='flex flex-col pb-8'>
         <div className='profile-banner' />
         <div className='profile'>
           <div className='profile-img'>
-            <span className='text-5xl font-bold text-blue-500'>{user.firstName[0]}</span>
+            <span className='text-5xl font-bold text-blue-500'>{name[0]}</span>
           </div>
           <div className='profile-details'>
             <h1 className='profile-name'>
-              {user.firstName} {user.lastName}
+              {firstName} {lastName}
             </h1>
-            <p className='profile-email'>{user.email}</p>
+            <p className='profile-email'>{user?.email}</p>
           </div>
         </div>
       </section>

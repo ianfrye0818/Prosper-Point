@@ -33,7 +33,8 @@ export default function AuthForm({ type }: AuthFormProps) {
 
     try {
       if (type === 'sign-in') {
-        const user = await signIn(data.email, data.password);
+        console.log('Sign In');
+        const user = await signIn({ email: data.email, password: data.password });
         setUser(user);
         router.push('/');
       }
