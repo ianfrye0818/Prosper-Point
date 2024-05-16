@@ -9,6 +9,7 @@ import SideBarFooter from './SideBarFooter';
 
 export default function MobileNavBar({ user }: MobileNavProps) {
   const pathName = usePathname();
+
   return (
     <section className='w-full max-w-[264px]'>
       <Sheet>
@@ -77,7 +78,11 @@ export default function MobileNavBar({ user }: MobileNavProps) {
                 USER
               </nav>
             </SheetClose>
-            <SideBarFooter user={user} />
+
+            <SideBarFooter
+              user={user}
+              type='mobile'
+            />
           </div>
         </SheetContent>
       </Sheet>

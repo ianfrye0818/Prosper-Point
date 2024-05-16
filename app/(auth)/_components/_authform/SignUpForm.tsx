@@ -2,6 +2,8 @@ import * as z from 'zod';
 import ZodFormFieldInput from '../_common/ZodFormFieldInput';
 import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
 import { UseFormReturn } from 'react-hook-form';
+import SSNInput from '../_common/SSNInput';
+import { DatePicker } from '../_common/DatePicker';
 
 const formSchema = AUTH_FORM_SCHEMA('sign-up');
 
@@ -57,25 +59,32 @@ export default function SignUpFormFields({ form }: SignUpFormFieldsProps) {
           control={form.control}
           label='Postal Code'
           name='postalCode'
-          placeholder='01234'
+          placeholder='12345'
         />
       </div>
 
       <div className='flex gap-4'>
         {/* date of birth */}
-        <ZodFormFieldInput
+        <DatePicker
           control={form.control}
           label='Date of Birth'
           name='dateOfBirth'
-          placeholder='YYYY-MM-DD'
         />
+        {/* <ZodFormFieldInput
+          control={form.control}
+          label='Date of Birth'
+          name='dateOfBirth'
+          placeholder='MM/DD/YYYY'
+        /> */}
         {/* ssn */}
-        <ZodFormFieldInput
+        {/* <ZodFormFieldInput
           control={form.control}
           label='SSN'
           name='ssn'
-          placeholder='1234'
-        />
+          placeholder='xxx-xx-xxxx'
+          obscure
+        /> */}
+        <SSNInput form={form} />
       </div>
     </>
   );

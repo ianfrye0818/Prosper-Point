@@ -14,7 +14,7 @@ export default function ShowPasswordButton({ isVisable, setIsVisable }: ShowPass
       asChild
     >
       <>
-        {!isVisable ? (
+        {isVisable ? (
           <EyeIcon
             onClick={() => setIsVisable((prev) => !prev)}
             size={20}

@@ -1,8 +1,8 @@
 'use server';
 import { ID } from 'node-appwrite';
-import { createAdminClient, createSessionClient } from '../server/appwrite';
+import { createAdminClient, createSessionClient } from '../../../lib/server/appwrite';
 import { cookies } from 'next/headers';
-import { parseStringify } from '../utils';
+import { parseStringify } from '../../../lib/utils';
 
 export async function signIn({ email, password }: signInProps) {
   try {

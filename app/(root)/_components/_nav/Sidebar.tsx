@@ -49,7 +49,11 @@ export default function Sidebar({ user }: SiderbarProps) {
         })}
         USER
       </nav>
-      <SideBarFooter user={user} />
+
+      <SideBarFooter
+        user={user}
+        type='desktop'
+      />
     </section>
   );
 }

@@ -10,8 +10,8 @@ import AuthFormSubmitButton from './AuthFormSubmitButton';
 import AuthFormHeader from './AuthFormHeader';
 import AuthFormFooter from './AuthFormFooter';
 import SignUpFormFields from './SignUpForm';
-import { redirect, useRouter } from 'next/navigation';
-import { signIn, signUp } from '@/lib/actions/user.actions';
+import { useRouter } from 'next/navigation';
+import { signIn, signUp } from '@/app/(auth)/_authActions/user.actions';
 
 export default function AuthForm({ type }: AuthFormProps) {
   const [user, setUser] = useState(null);
@@ -41,7 +41,6 @@ export default function AuthForm({ type }: AuthFormProps) {
       if (type === 'sign-up') {
         const newUser = await signUp(data);
         setUser(newUser);
-        router.push('/');
       }
     } catch (error) {
       console.error(error);
@@ -78,8 +77,9 @@ export default function AuthForm({ type }: AuthFormProps) {
               <ZodFormFieldInput
                 name={'password'}
                 label='Password'
-                placeholder='******'
+                placeholder='∙∙∙∙∙∙∙'
                 control={form.control}
+                obscure
               />
               {/* Submit button */}
               <AuthFormSubmitButton

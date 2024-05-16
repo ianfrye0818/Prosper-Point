@@ -23,9 +23,11 @@ export default function AuthFormHeader({ type, user }: AuthFormHeaderProps) {
       </Link>
       <div className='flex flex-col gap-2 md:gap-3'>
         <h1 className='text-24 lg:text-35 font-semibold text-gray-900'>
-          {user ? 'Link Account' : type === 'sign-in' ? 'Sign In' : 'Sign up'}
+          {user && type === 'sign-up' ? 'Link Account' : type === 'sign-in' ? 'Sign In' : 'Sign up'}
           <p className='text-16 font-normal text-gray-600'>
-            {user ? 'Link your account to get started' : 'Please enter your details'}
+            {user && type === 'sign-up'
+              ? 'Link your account to get started'
+              : 'Please enter your details'}
           </p>
         </h1>
       </div>
