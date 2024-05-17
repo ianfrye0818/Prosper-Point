@@ -70,20 +70,7 @@ export default function SignUpFormFields({ form }: SignUpFormFieldsProps) {
           label='Date of Birth'
           name='dateOfBirth'
         />
-        {/* <ZodFormFieldInput
-          control={form.control}
-          label='Date of Birth'
-          name='dateOfBirth'
-          placeholder='MM/DD/YYYY'
-        /> */}
-        {/* ssn */}
-        {/* <ZodFormFieldInput
-          control={form.control}
-          label='SSN'
-          name='ssn'
-          placeholder='xxx-xx-xxxx'
-          obscure
-        /> */}
+        {/* SSN */}
         <SSNInput form={form} />
       </div>
     </>

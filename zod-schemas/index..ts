@@ -21,15 +21,15 @@ export const AUTH_FORM_SCHEMA = (type: 'sign-up' | 'sign-in') =>
     state:
       type === 'sign-in'
         ? z.string().optional()
-        : z.string().regex(/^[A-Z]{2}$/, 'Please enter a valid state (XX)'),
+        : z.string().regex(/^[A-Za-z]{2}$/, 'Please enter a valid state (XX)'),
     postalCode:
       type === 'sign-in'
         ? z.string().optional()
         : z.string().regex(/^\d{5}$/, 'Please enter a valid postal code (xxxxx)'),
     dateOfBirth:
       type === 'sign-in'
-        ? z.string().optional()
-        : z.string().regex(/^\d{2}-\d{2}-\d{4}$/, 'Please enter a valid date (dd-mm-yyyy)'),
+        ? z.date().optional()
+        : z.date().max(new Date(), 'Please enter a valid date of birth'),
     ssn:
       type === 'sign-in'
         ? z.string().optional()

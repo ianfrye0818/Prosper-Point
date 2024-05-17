@@ -1,18 +1,18 @@
 import { useState } from 'react';
+import * as z from 'zod';
 import { FormField, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import ShowPasswordButton from '../_authform/AuthFormShowPasswordButton';
-import * as z from 'zod';
 import { FieldPath, Control } from 'react-hook-form';
 import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
 
 const formSchema = AUTH_FORM_SCHEMA('sign-up');
-
+//Ommitting DOB and SSN since they have their own custom fields
 interface FormInputProps {
   label?: string;
   placeholder?: string;
-  name: FieldPath<z.infer<typeof formSchema>>;
-  control: Control<z.infer<typeof formSchema>>;
+  name: FieldPath<Omit<z.infer<typeof formSchema>, 'dateOfBirth' | 'ssn'>>;
+  control: Control<Omit<z.infer<typeof formSchema>, 'dateOfBirth' | 'ssn'>>;
   obscure?: boolean;
 }
 
@@ -37,7 +37,7 @@ export default function ZodFormFieldInput({
                 <Input
                   type={isVisable ? 'password' : 'text'}
                   placeholder={placeholder}
-                  className='input-class'
+                  className='input-cla ss'
                   {...field}
                 />
                 {obscure && (

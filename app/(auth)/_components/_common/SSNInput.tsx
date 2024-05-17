@@ -11,9 +11,16 @@ const formSchema = AUTH_FORM_SCHEMA('sign-up');
 interface SSNInputProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
   obscure?: boolean;
+  label?: string;
+  placeholder?: string;
 }
 
-export default function SSNInput({ obscure = true, form }: SSNInputProps) {
+export default function SSNInput({
+  obscure = true,
+  form,
+  label = 'SSN',
+  placeholder = 'xxx-xx-xxxx',
+}: SSNInputProps) {
   const [isVisable, setIsVisable] = useState(obscure);
 
   const formatSSN = (value: string) => {
@@ -26,15 +33,15 @@ export default function SSNInput({ obscure = true, form }: SSNInputProps) {
     <FormField
       control={form.control}
       name={'ssn'}
-      render={({ field: { onChange, onBlur, value, name, ref } }) => (
+      render={({ field: { onChange, value } }) => (
         <div className='form-item'>
-          <FormLabel className='form-label'>SSN</FormLabel>
+          <FormLabel className='form-label'>{label}</FormLabel>
           <div className='flex w-full flex-col'>
             <FormControl>
               <div className='relative'>
                 <Input
                   type={isVisable ? 'password' : 'text'}
-                  placeholder='XXX-XX-XXXX'
+                  placeholder={placeholder}
                   className='input-class'
                   onChange={(e) => {
                     const formattedValue = formatSSN(e.target.value);
