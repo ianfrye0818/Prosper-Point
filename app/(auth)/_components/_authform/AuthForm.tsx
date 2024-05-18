@@ -12,6 +12,7 @@ import AuthFormFooter from './AuthFormFooter';
 import SignUpFormFields from './SignUpForm';
 import { useRouter } from 'next/navigation';
 import { signIn, signUp } from '@/app/(auth)/_authActions/user.actions';
+import PlaidLink from './PlaidLink';
 
 export default function AuthForm({ type }: AuthFormProps) {
   const [user, setUser] = useState(null);
@@ -39,7 +40,19 @@ export default function AuthForm({ type }: AuthFormProps) {
         router.push('/');
       }
       if (type === 'sign-up') {
-        const newUser = await signUp(data);
+        const userData = {
+          firstName: data.firstName!,
+          lastName: data.lastName!,
+          address1: data.address1!,
+          city: data.city!,
+          state: data.state!,
+          postalCode: data.postalCode!,
+          dateOfBirth: data.dateOfBirth!,
+          ssn: data.ssn!,
+          email: data.email,
+          password: data.password,
+        };
+        const newUser = await signUp(userData);
         setUser(newUser);
       }
     } catch (error) {
@@ -56,7 +69,12 @@ export default function AuthForm({ type }: AuthFormProps) {
         user={user}
       />
       {user ? (
-        <div className='flex flex-col gap-4'>{/* TODO: Plaid Link */}</div>
+        <div className='flex flex-col gap-4'>
+          <PlaidLink
+            user={user!}
+            variant='primary'
+          />
+        </div>
       ) : (
         <>
           <Form {...form}>

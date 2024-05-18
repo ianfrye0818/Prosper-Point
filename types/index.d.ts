@@ -8,14 +8,14 @@ declare type SearchParamProps = {
 // ========================================
 
 declare type SignUpParams = {
-  firstName?: string;
-  lastName?: string;
-  address1?: string;
-  city?: string;
-  state?: string;
-  postalCode?: string;
-  dateOfBirth?: Date;
-  ssn?: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: Date;
+  ssn: string;
   email: string;
   password: string;
 };
@@ -38,7 +38,7 @@ declare type User = {
   city: string;
   state: string;
   postalCode: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   ssn: string;
 };
 
@@ -119,6 +119,21 @@ declare type AddFundingSourceParams = {
   bankName: string;
 };
 
+declare interface DwollaRequestBody {
+  _links: {
+    source: {
+      href: string;
+    };
+    destination: {
+      href: string;
+    };
+  };
+  amount: {
+    currency: 'USD';
+    value: string;
+  };
+}
+
 declare type NewDwollaCustomerParams = {
   firstName: string;
   lastName: string;
@@ -128,7 +143,7 @@ declare type NewDwollaCustomerParams = {
   city: string;
   state: string;
   postalCode: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   ssn: string;
 };
 
@@ -172,6 +187,20 @@ declare interface PlaidLinkProps {
   user: User;
   variant?: 'primary' | 'ghost';
   dwollaCustomerId?: string;
+}
+
+declare interface ExchangePublicTokenProps {
+  user: User;
+  publicToken: string;
+}
+
+declare interface CreateBankAccountProps {
+  userId: string;
+  bankId: string;
+  accountId: string;
+  accessToken: string;
+  fundingSourceUrl: string;
+  sharableId: string;
 }
 
 // declare type User = sdk.Models.Document & {
@@ -312,15 +341,6 @@ declare interface getUserInfoProps {
 declare interface exchangePublicTokenProps {
   publicToken: string;
   user: User;
-}
-
-declare interface createBankAccountProps {
-  accessToken: string;
-  userId: string;
-  accountId: string;
-  bankId: string;
-  fundingSourceUrl: string;
-  sharableId: string;
 }
 
 declare interface getBanksProps {
