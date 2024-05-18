@@ -11,7 +11,7 @@ import {
   Products,
 } from 'plaid';
 import { addFundingSource } from './dwolla.actions';
-import { createAdminClient } from '@/lib/server/appwrite';
+import { createAdminClient } from '@/lib/_actions/appwrite.actions';
 import { ID } from 'node-appwrite';
 
 const DATABASE_ID = process.env.APPWRITE_DATABASE_ID;

@@ -3,7 +3,7 @@ import { Client, Account, ID, Databases, Users } from 'node-appwrite';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-async function createSessionClient() {
+export async function createSessionClient() {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
@@ -20,7 +20,7 @@ async function createSessionClient() {
   };
 }
 
-async function createAdminClient() {
+export async function createAdminClient() {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT)
@@ -41,7 +41,7 @@ async function createAdminClient() {
   };
 }
 
-async function signUpWithEmail(userData: SignUpParams) {
+export async function signUpWithEmail(userData: SignUpParams) {
   const { email, password, firstName: name } = userData;
   const { account } = await createAdminClient();
   await account.create(ID.unique(), email, password, name);
@@ -55,5 +55,3 @@ async function signUpWithEmail(userData: SignUpParams) {
   });
   redirect('/');
 }
-
-export { signUpWithEmail, createAdminClient, createSessionClient };

@@ -1,6 +1,6 @@
 'use server';
 import { ID } from 'node-appwrite';
-import { createAdminClient, createSessionClient } from '../../../lib/server/appwrite';
+import { createAdminClient, createSessionClient } from '../../../lib/_actions/appwrite.actions';
 import { cookies } from 'next/headers';
 import { extractCustomerIdFromUrl, parseStringify } from '../../../lib/utils';
 import { createDwollaCustomer } from './dwolla.actions';
