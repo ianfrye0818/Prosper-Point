@@ -13,7 +13,7 @@ export default function SideBarFooter({ user, type }: FooterProps) {
       const signedOut = await signOut();
       if (signedOut) router.push('/sign-in');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

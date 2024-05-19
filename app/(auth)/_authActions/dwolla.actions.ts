@@ -31,7 +31,7 @@ export async function createFundingSource(options: CreateFundingSourceOptions) {
     return await dwollaClient
       .post(`customers/${options.customerId}/funding-sources`, {
         name: options.fundingSourceName,
-        pladToken: options.plaidToken,
+        plaidToken: options.plaidToken,
       })
       .then((res) => res.headers.get('location'));
   } catch (error) {
@@ -41,7 +41,7 @@ export async function createFundingSource(options: CreateFundingSourceOptions) {
 
 export async function createOnDemandAuthorzation() {
   try {
-    const onDemandAuthorization = await dwollaClient.post('on-demand-authorization');
+    const onDemandAuthorization = await dwollaClient.post('on-demand-authorizations');
     const authLink = onDemandAuthorization.body._links;
     return authLink;
   } catch (error) {
@@ -100,6 +100,7 @@ export async function addFundingSource({
       plaidToken: processorToken,
       _links: dwollaAuthLinks,
     };
+    console.log('funding source Options: ', fundingSourceOptions);
     return await createFundingSource(fundingSourceOptions);
   } catch (error) {
     console.error(['addFundingSource'], 'Error adding funding source: ', error);

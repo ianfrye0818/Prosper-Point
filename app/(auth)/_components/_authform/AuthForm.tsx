@@ -14,8 +14,8 @@ import { useRouter } from 'next/navigation';
 import { signIn, signUp } from '@/app/(auth)/_authActions/user.actions';
 import PlaidLink from './PlaidLink';
 
-export default function AuthForm({ type }: AuthFormProps) {
-  const [user, setUser] = useState(null);
+export default function AuthForm({ type, user: loggedInUser }: AuthFormProps) {
+  const [user, setUser] = useState(loggedInUser);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -34,7 +34,6 @@ export default function AuthForm({ type }: AuthFormProps) {
 
     try {
       if (type === 'sign-in') {
-        console.log('Sign In');
         const user = await signIn({ email: data.email, password: data.password });
         setUser(user);
         router.push('/');
@@ -43,6 +42,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         const userData = {
           firstName: data.firstName!,
           lastName: data.lastName!,
+          name: `${data.firstName} ${data.lastName}`!,
           address1: data.address1!,
           city: data.city!,
           state: data.state!,

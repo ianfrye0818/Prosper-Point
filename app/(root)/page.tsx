@@ -2,11 +2,10 @@ import HeaderBox from '@/app/(root)/_components/_common/HeaderBox';
 import RightSidebar from '@/app/(root)/_components/_nav/RightSidebar';
 import TotalBalanceBox from '@/app/(root)/_components/_common/TotalBalanceBox';
 import React from 'react';
-import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
+import { getDataBaseUser } from '@/app/(auth)/_authActions/user.actions';
 
 export default async function Home() {
-  const user = await getLoggedInUser();
-
+  const user = (await getDataBaseUser()) as User;
   return (
     <section className='home'>
       <div className='home-content'>

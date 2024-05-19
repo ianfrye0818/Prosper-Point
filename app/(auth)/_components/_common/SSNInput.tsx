@@ -16,7 +16,7 @@ interface SSNInputProps {
 }
 
 export default function SSNInput({
-  obscure = true,
+  obscure = false,
   form,
   label = 'SSN',
   placeholder = 'xxx-xx-xxxx',

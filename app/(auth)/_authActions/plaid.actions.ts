@@ -18,19 +18,17 @@ const DATABASE_ID = process.env.APPWRITE_DATABASE_ID;
 const BANK_COLLECTION_ID = process.env.APPWRITE_BANK_COLLECTION_ID;
 
 export async function createLinkToken(user: User) {
+  const request: LinkTokenCreateRequest = {
+    user: {
+      client_user_id: user.$id,
+    },
+    client_name: `${user.firstName} ${user.lastName}`,
+    products: [Products.Auth] as Products[],
+    language: 'en',
+    country_codes: [CountryCode.Us] as CountryCode[],
+  };
   try {
-    console.log('current user: ' + user);
-    const tokenParams: LinkTokenCreateRequest = {
-      user: {
-        client_user_id: user.$id,
-      },
-      client_name: `${user.firstName} ${user.lastName}`,
-      products: ['auth'] as Products[],
-      language: 'en',
-      country_codes: ['US'] as CountryCode[],
-    };
-
-    const response = await plaidClient.linkTokenCreate(tokenParams);
+    const response = await plaidClient.linkTokenCreate(request);
     return parseStringify({ linkToken: response.data.link_token });
   } catch (error) {
     console.error(['createLinkToken'], error);
@@ -97,9 +95,9 @@ export async function exchangePublicToken({ publicToken, user }: ExchangePublicT
       processorToken,
       bankName: accountData.name,
     });
-    if (!fundingSourceUrl) throw Error;
+    if (!fundingSourceUrl) throw Error('Error creating fundingSourceURL');
 
-    await createBankAccount({
+    const bankAccount = await createBankAccount({
       userId: user.$id,
       bankId: itemId,
       accountId: accountData.account_id,
@@ -107,6 +105,7 @@ export async function exchangePublicToken({ publicToken, user }: ExchangePublicT
       fundingSourceUrl,
       sharableId: encryptId(accountData.account_id),
     });
+    if (!bankAccount) throw new Error('Error creating account');
 
     revalidatePath('/');
 

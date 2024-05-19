@@ -10,6 +10,7 @@ declare type SearchParamProps = {
 declare type SignUpParams = {
   firstName: string;
   lastName: string;
+  name: string;
   address1: string;
   city: string;
   state: string;
@@ -225,6 +226,7 @@ declare type AppwriteUser = {
 };
 declare interface AuthFormProps {
   type: 'sign-in' | 'sign-up';
+  user?: User;
 }
 
 declare interface BankDropdownProps {

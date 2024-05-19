@@ -9,11 +9,15 @@ export default function PlaidLink({ user, variant }: PlaidLinkProps) {
   const router = useRouter();
   const onSuccess = useCallback<PlaidLinkOnSuccess>(
     async (public_token: string) => {
-      await exchangePublicToken({
-        publicToken: public_token,
-        user,
-      });
-      router.push('/');
+      try {
+        await exchangePublicToken({
+          publicToken: public_token,
+          user,
+        });
+        router.push('/');
+      } catch (error) {
+        console.error(error);
+      }
     },
     [user]
   );

@@ -1,5 +1,5 @@
 'use server';
-import { ID } from 'node-appwrite';
+import { ID, Query } from 'node-appwrite';
 import { createAdminClient, createSessionClient } from '../../../lib/_actions/appwrite.actions';
 import { cookies } from 'next/headers';
 import { extractCustomerIdFromUrl, parseStringify } from '../../../lib/utils';
@@ -18,7 +18,7 @@ export async function signIn({ email, password }: signInProps) {
       path: '/',
       secure: process.env.NODE_ENV !== 'development',
     });
-    const user = await getLoggedInUser();
+    const user = (await getDataBaseUser()) as User;
     return parseStringify(user);
   } catch (error) {
     console.error(error);
@@ -29,12 +29,11 @@ export async function signUp({ password, ...userData }: SignUpParams) {
   let newUserAccount;
 
   try {
-    const { email, firstName, lastName } = userData;
-    const fullname = `${firstName} ${lastName}`;
+    const { email, name } = userData;
 
     const { account, database } = await createAdminClient();
 
-    const newUserAccount = await account.create(ID.unique(), email, password, fullname);
+    const newUserAccount = await account.create(ID.unique(), email, password, name);
     if (!newUserAccount) throw new Error('Error createing user');
 
     const dwollaCustomerUrl = await createDwollaCustomer({ ...userData, type: 'personal' });
@@ -79,6 +78,23 @@ export async function getLoggedInUser() {
     const user = await account.get();
     return parseStringify(user);
   } catch (error) {
+    return null;
+  }
+}
+
+export async function getDataBaseUser() {
+  try {
+    const appwriteuser = (await getLoggedInUser()) as User;
+    if (!appwriteuser) throw new Error('No user logged in');
+    const { database } = await createAdminClient();
+    const userDocList = await database.listDocuments(DATABASE_ID, USER_COLLECTIOIN_ID, [
+      Query.equal('userId', appwriteuser.$id),
+    ]);
+    if (userDocList.documents.length === 0) throw new Error('Document could not be found');
+    const user = userDocList.documents[0];
+    return parseStringify(user);
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }
