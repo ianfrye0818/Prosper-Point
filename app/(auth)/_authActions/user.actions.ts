@@ -1,5 +1,5 @@
 'use server';
-import { ID, Query } from 'node-appwrite';
+import { ID, Models, Query, QueryTypes } from 'node-appwrite';
 import { createAdminClient, createSessionClient } from '../../../lib/_actions/appwrite.actions';
 import { cookies } from 'next/headers';
 import { extractCustomerIdFromUrl, parseStringify } from '../../../lib/utils';
@@ -8,7 +8,7 @@ import { createDwollaCustomer } from './dwolla.actions';
 const DATABASE_ID = process.env.APPWRITE_DATABASE_ID;
 const USER_COLLECTIOIN_ID = process.env.APPWRITE_USER_COLLECTION_ID;
 
-export async function signIn({ email, password }: signInProps) {
+export async function signIn({ email, password }: SignInProps) {
   try {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
@@ -18,7 +18,7 @@ export async function signIn({ email, password }: signInProps) {
       path: '/',
       secure: process.env.NODE_ENV !== 'development',
     });
-    const user = (await getDataBaseUser()) as User;
+    const user = await getDataBaseUser({ userId: session.userId });
     return parseStringify(user);
   } catch (error) {
     console.error(error);
@@ -75,21 +75,22 @@ export async function signOut() {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    const user = await account.get();
+    const userAccount = await account.get();
+    const user = (await getDataBaseUser({ userId: userAccount.$id })) as User;
     return parseStringify(user);
   } catch (error) {
     return null;
   }
 }
 
-export async function getDataBaseUser() {
+export async function getDataBaseUser({ userId }: GetDataBaseUserProps) {
   try {
-    const appwriteuser = (await getLoggedInUser()) as User;
-    if (!appwriteuser) throw new Error('No user logged in');
     const { database } = await createAdminClient();
-    const userDocList = await database.listDocuments(DATABASE_ID, USER_COLLECTIOIN_ID, [
-      Query.equal('userId', appwriteuser.$id),
-    ]);
+    const userDocList = await database.listDocuments<Models.Document>(
+      DATABASE_ID,
+      USER_COLLECTIOIN_ID,
+      [Query.equal('userId', userId)]
+    );
     if (userDocList.documents.length === 0) throw new Error('Document could not be found');
     const user = userDocList.documents[0];
     return parseStringify(user);

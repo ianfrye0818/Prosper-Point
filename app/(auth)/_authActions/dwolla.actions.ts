@@ -100,7 +100,6 @@ export async function addFundingSource({
       plaidToken: processorToken,
       _links: dwollaAuthLinks,
     };
-    console.log('funding source Options: ', fundingSourceOptions);
     return await createFundingSource(fundingSourceOptions);
   } catch (error) {
     console.error(['addFundingSource'], 'Error adding funding source: ', error);

@@ -1,8 +1,8 @@
 import AuthForm from '@/app/(auth)/_components/_authform/AuthForm';
-import { getDataBaseUser } from '../_authActions/user.actions';
+import { getDataBaseUser, getLoggedInUser } from '../_authActions/user.actions';
 
 export default async function SignUp() {
-  const user = (await getDataBaseUser()) as User;
+  const user = await getLoggedInUser();
   return (
     <section className='flex-center size-full max-sm:px-6'>
       <AuthForm

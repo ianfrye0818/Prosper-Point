@@ -2,11 +2,11 @@ import Image from 'next/image';
 import React, { PropsWithChildren } from 'react';
 import Sidebar from './_components/_nav/Sidebar';
 import MobileNavBar from './_components/_nav/MobileNavBar';
-import { getDataBaseUser } from '@/app/(auth)/_authActions/user.actions';
+import { getDataBaseUser, getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
 import { redirect } from 'next/navigation';
 
 export default async function RootLayout({ children }: PropsWithChildren) {
-  const user = (await getDataBaseUser()) as User;
+  const user = await getLoggedInUser();
 
   if (!user) redirect('/sign-in');
 
