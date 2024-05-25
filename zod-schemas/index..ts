@@ -1,3 +1,4 @@
+import { formatTitleCase } from '@/lib/utils';
 import * as z from 'zod';
 
 export const AUTH_FORM_SCHEMA = (type: 'sign-up' | 'sign-in') =>
@@ -5,23 +6,40 @@ export const AUTH_FORM_SCHEMA = (type: 'sign-up' | 'sign-in') =>
     firstName:
       type === 'sign-in'
         ? z.string().optional()
-        : z.string().min(2, 'Please enter a valid first name'),
+        : z
+            .string()
+            .min(2, 'Please enter a valid first name')
+            .transform((val) => formatTitleCase(val)),
     lastName:
       type === 'sign-in'
         ? z.string().optional()
-        : z.string().min(2, 'Please enter a valid last name'),
+        : z
+            .string()
+            .min(2, 'Please enter a valid last name')
+            .transform((val) => formatTitleCase(val)),
     address1:
       type === 'sign-in'
         ? z.string().optional()
-        : z.string().max(50).min(2, 'Please enter a valid address'),
+        : z
+            .string()
+            .max(50)
+            .min(2, 'Please enter a valid address')
+            .transform((val) => formatTitleCase(val)),
     city:
       type === 'sign-in'
         ? z.string().optional()
-        : z.string().max(50).min(2, 'Please enter a valid city'),
+        : z
+            .string()
+            .max(50)
+            .min(2, 'Please enter a valid city')
+            .transform((val) => formatTitleCase(val)),
     state:
       type === 'sign-in'
         ? z.string().optional()
-        : z.string().regex(/^[A-Za-z]{2}$/, 'Please enter a valid state (XX)'),
+        : z
+            .string()
+            .regex(/^[A-Za-z]{2}$/, 'Please enter a valid state (XX)')
+            .transform((val) => val.toUpperCase()),
     postalCode:
       type === 'sign-in'
         ? z.string().optional()
