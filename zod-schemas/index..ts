@@ -60,3 +60,14 @@ export const AUTH_FORM_SCHEMA = (type: 'sign-up' | 'sign-in') =>
       .min(6, 'Please enter a min of 6 charaters')
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, 'Please enter a valid password'),
   });
+
+export const PAYMENT_TRANSFER_FORM_SCHEMA = z.object({
+  email: z.string().email('Please enter a valid email'),
+  name: z
+    .string()
+    .min(2, 'Please enter a valid name')
+    .transform((val) => formatTitleCase(val)),
+  amount: z.string().min(4, 'Please enter a valid amount'),
+  senderBank: z.string().min(4, 'Please enter a valid bank name'),
+  sharableId: z.string().min(4, 'Please enter a valid id'),
+});

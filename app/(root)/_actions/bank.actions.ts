@@ -13,7 +13,7 @@ const BANKS_COLLECTION_ID = process.env.APPWRITE_BANK_COLLECTION_ID;
 export async function getAccounts({ userId }: GetAccountsProps) {
   try {
     const banks = await getBanks({ userId });
-    // console.log({ userBanks: banks });
+
     const accounts = await Promise.all(
       banks?.map(async (bank: Bank) => {
         const accountsResponse = await plaidClient.accountsGet({

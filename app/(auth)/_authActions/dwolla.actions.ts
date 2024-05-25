@@ -89,9 +89,10 @@ export async function createTransfer({
         value: amount,
       },
     };
-    return await dwollaClient
-      .post('transfers', requestBody)
-      .then((res) => res.headers.get('location'));
+    return await dwollaClient.post('transfers', requestBody).then((res) => {
+      console.log({ res });
+      return res.headers.get('location');
+    });
   } catch (error) {
     console.error(['createTranfer'], 'Error creating tranfer: ', error);
   }

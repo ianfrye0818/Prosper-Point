@@ -9,6 +9,7 @@ export default function TransactionTableRow({ transaction }: { transaction: Tran
 
   return (
     <TableRow
+      key={transaction.$id}
       className={`${isNegative ? 'bg-[#FFFBFA]' : 'bg-[#F6FEF9]'} !over:bg-none !border-b-DEFAULT`}
     >
       <TableCell className='max-w-[250px] pl-2 pr-10'>

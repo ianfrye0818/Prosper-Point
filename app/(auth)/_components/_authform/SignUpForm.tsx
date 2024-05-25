@@ -1,9 +1,10 @@
 import * as z from 'zod';
-import ZodFormFieldInput from '../_common/ZodFormFieldInput';
+
 import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
 import { UseFormReturn } from 'react-hook-form';
 import SSNInput from '../_common/SSNInput';
 import { DatePicker } from '../_common/DatePicker';
+import ZodFormFieldInput from './ZodAuthFormFieldInput';
 
 const formSchema = AUTH_FORM_SCHEMA('sign-up');
 

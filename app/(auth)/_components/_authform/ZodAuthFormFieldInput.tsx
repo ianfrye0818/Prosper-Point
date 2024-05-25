@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as z from 'zod';
 import { FormField, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import ShowPasswordButton from '../_authform/AuthFormShowPasswordButton';
+import ShowPasswordButton from './AuthFormShowPasswordButton';
 import { FieldPath, Control } from 'react-hook-form';
 import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
 

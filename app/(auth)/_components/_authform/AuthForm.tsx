@@ -4,7 +4,7 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
-import ZodFormFieldInput from '../_common/ZodFormFieldInput';
+
 import { AUTH_FORM_SCHEMA } from '@/zod-schemas/index.';
 import AuthFormSubmitButton from './AuthFormSubmitButton';
 import AuthFormHeader from './AuthFormHeader';
@@ -13,6 +13,7 @@ import SignUpFormFields from './SignUpForm';
 import { useRouter } from 'next/navigation';
 import { signIn, signUp } from '@/app/(auth)/_authActions/user.actions';
 import PlaidLink from './PlaidLink';
+import ZodFormFieldInput from './ZodAuthFormFieldInput';
 
 export default function AuthForm({ type, user: loggedInUser }: AuthFormProps) {
   const [user, setUser] = useState(loggedInUser);

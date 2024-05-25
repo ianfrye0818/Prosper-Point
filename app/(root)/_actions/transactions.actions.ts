@@ -22,9 +22,10 @@ export async function createTransaction(transaction: CreateTransactionProps) {
       }
     );
 
-    return parseStringify(newTransaction);
+    return parseStringify(newTransaction) as Transaction;
   } catch (error) {
     console.error(['createTransaction'], 'An error occured while creating transaction: ', error);
+    throw error;
   }
 }
 
@@ -52,5 +53,6 @@ export async function getTransactionsByBankId({ bankId }: GetTransactionsByBankI
     return parseStringify(transactions);
   } catch (error) {
     console.error(['getTransactionsByBankId'], 'Could not get banking transactions: ', error);
+    throw error;
   }
 }
