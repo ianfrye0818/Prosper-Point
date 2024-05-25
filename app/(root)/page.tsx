@@ -12,7 +12,6 @@ export default async function Home({ searchParams: { id, page } }: SearchParamPr
   const accounts = (await getAccounts({ userId: user.$id })) as GetAccountsData;
   const banks = (await getBanks({ userId: user.$id })) as Bank[];
 
-  //combines the bank data with the account data into a single object
   const compbinedData = banks.slice(0, 2).map((bank, index) => {
     return {
       ...bank,
@@ -28,6 +27,7 @@ export default async function Home({ searchParams: { id, page } }: SearchParamPr
   const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
   const account = await getAccount({ appwriteItemId });
 
+  if (!account) return null;
   return (
     <section className='home'>
       <div className='home-content'>

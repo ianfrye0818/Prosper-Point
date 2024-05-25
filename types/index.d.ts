@@ -64,6 +64,11 @@ declare type Account = {
   sharableId: string;
 };
 
+declare interface GetAccountData {
+  data: Account;
+  transactions: Transaction[];
+}
+
 declare interface GetAccountsData {
   data: Account[];
   totalBanks: number;

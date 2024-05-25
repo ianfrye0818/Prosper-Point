@@ -6,6 +6,7 @@ import { sidebarLinks } from '@/constants';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import SideBarFooter from './SideBarFooter';
+import PlaidLink from '@/app/(auth)/_components/_authform/PlaidLink';
 
 export default function Sidebar({ user }: SiderbarProps) {
   const pathName = usePathname();
@@ -47,7 +48,7 @@ export default function Sidebar({ user }: SiderbarProps) {
             </Link>
           );
         })}
-        USER
+        <PlaidLink user={user} />
       </nav>
 
       <SideBarFooter
