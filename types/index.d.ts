@@ -81,8 +81,7 @@ declare type Transaction = {
   pending: boolean;
   category: string;
   date: string;
-  image: string;
-  type: string;
+  image?: string;
   $createdAt: string;
   channel: string;
   senderBankId: string;

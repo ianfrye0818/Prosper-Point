@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { PropsWithChildren } from 'react';
 import Sidebar from './_components/_nav/Sidebar';
 import MobileNavBar from './_components/_nav/MobileNavBar';
-import { getDataBaseUser, getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
+import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
 import { redirect } from 'next/navigation';
 
 export default async function RootLayout({ children }: PropsWithChildren) {

@@ -13,6 +13,7 @@ const BANKS_COLLECTION_ID = process.env.APPWRITE_BANK_COLLECTION_ID;
 export async function getAccounts({ userId }: GetAccountsProps) {
   try {
     const banks = await getBanks({ userId });
+    // console.log({ userBanks: banks });
     const accounts = await Promise.all(
       banks?.map(async (bank: Bank) => {
         const accountsResponse = await plaidClient.accountsGet({
@@ -102,7 +103,7 @@ export async function getAccount({ appwriteItemId }: GetAccountProps) {
       transactions: allTransactions,
     });
   } catch (error) {
-    console.error(['getAccount'], 'Erro getting Account: ', error);
+    console.error(['getAccount'], 'Error getting Account: ', error);
   }
 }
 
@@ -161,6 +162,7 @@ export async function getBanks({ userId }: GetBanksProps) {
     return parseStringify(banks.documents);
   } catch (error) {
     console.error(['getBanks'], 'Error getting banks from DB', error);
+    return null;
   }
 }
 
@@ -168,10 +170,32 @@ export async function getBank({ documentId }: GetBankProps) {
   try {
     const { database } = await createAdminClient();
 
-    const bank = await database.getDocument(DATABASE_ID, BANKS_COLLECTION_ID, documentId);
+    const bank = await database.listDocuments(DATABASE_ID, BANKS_COLLECTION_ID, [
+      Query.equal('$id', documentId),
+    ]);
 
-    return parseStringify(bank);
+    if (bank.total !== 1) return null;
+
+    return parseStringify(bank.documents[0]);
   } catch (error) {
     console.error(['getBank'], 'Error getting bank from DB', error);
+    return null;
+  }
+}
+
+export async function getBankByAccountId({ accountId }: GetBankByAccountIdProps) {
+  try {
+    const { database } = await createAdminClient();
+
+    const bank = await database.listDocuments(DATABASE_ID, BANKS_COLLECTION_ID, [
+      Query.equal('accountId', accountId),
+    ]);
+
+    if (bank.total !== 1) return null;
+
+    return parseStringify(bank.documents[0]);
+  } catch (error) {
+    console.error(['getBankByAccountId'], 'Error getting bank by account id', error);
+    return null;
   }
 }

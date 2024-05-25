@@ -14,15 +14,18 @@ type Data = {
 };
 
 export default function DoughnutChart({ accounts }: DoughnutChartProps) {
+  const accountNames = accounts.map((account) => account.name);
+  const accountCurrentBalances = accounts.map((account) => account.currentBalance);
+
   const data: Data = {
     datasets: [
       {
         label: 'Banks',
-        data: [1250, 2500, 3700],
+        data: accountCurrentBalances,
         backgroundColor: ['#0747b6', '#2265d8', '#2f91fa'],
       },
     ],
-    labels: ['Bank1', 'Bank2', 'Bank3'],
+    labels: accountNames,
   };
   return (
     <Doughnut

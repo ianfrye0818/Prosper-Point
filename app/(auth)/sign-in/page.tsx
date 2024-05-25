@@ -1,6 +1,6 @@
 import AuthForm from '@/app/(auth)/_components/_authform/AuthForm';
 import React from 'react';
-import { getDataBaseUser, getLoggedInUser } from '../_authActions/user.actions';
+import { getLoggedInUser } from '../_authActions/user.actions';
 import { redirect } from 'next/navigation';
 
 export default async function SignIn() {
