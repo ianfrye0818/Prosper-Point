@@ -54,10 +54,10 @@ export default function AuthForm({ type, user: loggedInUser }: AuthFormProps) {
         };
         const newUser = await signUp(userData);
         setUser(newUser);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error(error);
-    } finally {
       setIsLoading(false);
     }
   }
@@ -68,7 +68,7 @@ export default function AuthForm({ type, user: loggedInUser }: AuthFormProps) {
         type={type}
         user={user}
       />
-      {user ? (
+      {user && type === 'sign-up' ? (
         <div className='flex flex-col gap-4'>
           <PlaidLink
             user={user!}

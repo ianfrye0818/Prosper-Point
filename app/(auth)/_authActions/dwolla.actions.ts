@@ -59,6 +59,16 @@ export async function createDwollaCustomer(newCustomer: NewDwollaCustomerParams)
   }
 }
 
+export async function deactivateDwollaCustomer(dwollaCustomerId: string) {
+  try {
+    return await dwollaClient.post(`customers/${dwollaCustomerId}`).then((res) => {
+      res.status >= 200 && res.status < 300 ? true : false;
+    });
+  } catch (error) {
+    console.error(['deactivateDwollaCustomer'], 'Error deactivating Dwolla customer: ', error);
+  }
+}
+
 export async function createTransfer({
   sourceFundingSourceUrl,
   destinationFundingSourceUrl,

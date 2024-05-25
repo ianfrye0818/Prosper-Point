@@ -170,10 +170,29 @@ export function decryptId(id: string) {
   return atob(id);
 }
 
-export const getTransactionStatus = (date: Date) => {
-  const today = new Date();
-  const twoDaysAgo = new Date(today);
-  twoDaysAgo.setDate(today.getDate() - 2);
+export const getTransactionStatus = (pending: boolean) => {
+  // const today = new Date();
+  // const twoDaysAgo = new Date(today);
+  // twoDaysAgo.setDate(today.getDate() - 2);
 
-  return date > twoDaysAgo ? 'Processing' : 'Success';
+  return pending ? 'Processing' : 'Success';
 };
+
+export const formatTitleCase = (string: string) => {
+  return string
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+export function formatTransactionObject(transaction: Transaction) {
+  return {
+    ...transaction,
+    status: getTransactionStatus(transaction.pending),
+    amount: formatAmount(transaction.amount),
+    date: formatDateTime(new Date(transaction.date)),
+    paymentChannel: formatTitleCase(transaction.paymentChannel),
+    category: formatTitleCase(transaction.category),
+    name: removeSpecialCharacters(transaction.name),
+  };
+}

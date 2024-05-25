@@ -23,11 +23,10 @@ export default async function Home({ searchParams: { id, page } }: SearchParamPr
   const currentPage = Number((page as string) || 1);
 
   if (!accounts) return null;
+
   const accountsData = accounts.data as Account[];
   const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
   const account = await getAccount({ appwriteItemId });
-
-  console.log('Account and Bank data array: ', [...banks.slice(0, 2), ...accountsData.slice(0, 2)]);
 
   return (
     <section className='home'>

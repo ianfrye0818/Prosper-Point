@@ -1,9 +1,30 @@
 'use server';
-import { ID, Models, Query, QueryTypes } from 'node-appwrite';
+import { Account, Databases, ID, Models, Query } from 'node-appwrite';
 import { createAdminClient, createSessionClient } from '../../../lib/_actions/appwrite.actions';
 import { cookies } from 'next/headers';
 import { extractCustomerIdFromUrl, parseStringify } from '../../../lib/utils';
-import { createDwollaCustomer } from './dwolla.actions';
+import { createDwollaCustomer, deactivateDwollaCustomer } from './dwolla.actions';
+
+type UserData = Omit<SignUpParams, 'password'>;
+interface CreateUserAccountProps {
+  account: Account;
+  email: string;
+  name: string;
+  password: string;
+}
+
+interface CreateNewUserAccountInDBProps {
+  database: Databases;
+  userData: UserData;
+  userId: string;
+  dwollaCustomerId: string;
+  dwollaCustomerUrl: string;
+}
+interface CreateSessionAndSetCookiesProps {
+  account: Account;
+  email: string;
+  password: string;
+}
 
 const DATABASE_ID = process.env.APPWRITE_DATABASE_ID;
 const USER_COLLECTIOIN_ID = process.env.APPWRITE_USER_COLLECTION_ID;
@@ -11,13 +32,7 @@ const USER_COLLECTIOIN_ID = process.env.APPWRITE_USER_COLLECTION_ID;
 export async function signIn({ email, password }: SignInProps) {
   try {
     const { account } = await createAdminClient();
-    const session = await account.createEmailPasswordSession(email, password);
-    cookies().set('auth-session', session.secret, {
-      httpOnly: true,
-      sameSite: 'strict',
-      path: '/',
-      secure: process.env.NODE_ENV !== 'development',
-    });
+    const session = await createSessionAndSetCookies({ account, email, password });
     const user = await getDataBaseUser({ userId: session.userId });
     return parseStringify(user);
   } catch (error) {
@@ -26,38 +41,44 @@ export async function signIn({ email, password }: SignInProps) {
 }
 
 export async function signUp({ password, ...userData }: SignUpParams) {
+  const { account, database, user } = await createAdminClient();
   let newUserAccount;
+  let dwollaCustomerId;
 
   try {
     const { email, name } = userData;
 
-    const { account, database } = await createAdminClient();
+    newUserAccount = await createUserAccount({ account, email, password, name });
+    try {
+      const dwollaCustomerUrl = await createDwollCustomerAccount(userData);
+      dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
 
-    const newUserAccount = await account.create(ID.unique(), email, password, name);
-    if (!newUserAccount) throw new Error('Error createing user');
+      const newUser = await createNewUserAccountInDB({
+        database,
+        userData,
+        userId: newUserAccount.$id,
+        dwollaCustomerId,
+        dwollaCustomerUrl,
+      });
 
-    const dwollaCustomerUrl = await createDwollaCustomer({ ...userData, type: 'personal' });
-    if (!dwollaCustomerUrl) throw new Error('Error createing Dwolla customer');
+      await createSessionAndSetCookies({ account, email, password });
 
-    const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
-
-    const newUser = await database.createDocument(DATABASE_ID, USER_COLLECTIOIN_ID, ID.unique(), {
-      ...userData,
-      userId: newUserAccount.$id,
-      dwollaCustomerId,
-      dwollaCustomerUrl,
-    });
-
-    const session = await account.createEmailPasswordSession(email, password);
-    cookies().set('auth-session', session.secret, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV !== 'development',
-    });
-    return parseStringify(newUser);
+      return parseStringify(newUser);
+    } catch (dwollaError) {
+      user.delete(newUserAccount.$id);
+      if (dwollaCustomerId) deactivateDwollaCustomer(dwollaCustomerId);
+      throw dwollaError;
+    }
   } catch (error) {
-    console.error(['signup-error'], error);
+    console.error(['signup-errr'], error);
+    if (newUserAccount) {
+      try {
+        await database.deleteDocument(DATABASE_ID, USER_COLLECTIOIN_ID, newUserAccount.$id);
+      } catch (deleteError) {
+        console.error(['delete-user-err'], deleteError);
+      }
+      throw error;
+    }
   }
 }
 
@@ -98,4 +119,48 @@ export async function getDataBaseUser({ userId }: GetDataBaseUserProps) {
     console.error(error);
     return null;
   }
+}
+
+async function createUserAccount({ account, email, name, password }: CreateUserAccountProps) {
+  const newUserAccount = await account.create(ID.unique(), email, password, name);
+  if (!newUserAccount) throw new Error('Error createing user');
+  return newUserAccount;
+}
+
+async function createDwollCustomerAccount(userData: UserData) {
+  const dwollaCustomerUrl = await createDwollaCustomer({ ...userData, type: 'personal' });
+  if (!dwollaCustomerUrl) throw new Error('Error createing Dwolla customer');
+  return dwollaCustomerUrl;
+}
+
+async function createNewUserAccountInDB({
+  database,
+  userData,
+  userId,
+  dwollaCustomerId,
+  dwollaCustomerUrl,
+}: CreateNewUserAccountInDBProps) {
+  const newUser = await database.createDocument(DATABASE_ID, USER_COLLECTIOIN_ID, ID.unique(), {
+    ...userData,
+    userId,
+    dwollaCustomerId,
+    dwollaCustomerUrl,
+  });
+  return newUser;
+}
+
+async function createSessionAndSetCookies({
+  account,
+  email,
+  password,
+}: CreateSessionAndSetCookiesProps) {
+  const session = await account.createEmailPasswordSession(email, password);
+  cookies().set('auth-session', session.secret, {
+    path: '/',
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV !== 'development',
+  });
+
+  return session;
 }

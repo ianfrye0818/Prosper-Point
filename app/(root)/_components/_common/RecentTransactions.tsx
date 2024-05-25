@@ -3,6 +3,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BankTabItem from './BankTabItem';
 import BankInfo from './BankInfo';
+import TransactionsTable from '../_transactionTable/TransactionsTable';
 
 export default function RecentTransactions({
   accounts,
@@ -49,6 +50,7 @@ export default function RecentTransactions({
               appwriteItemId={appwriteItemId}
               type='card'
             />
+            <TransactionsTable transactions={transactions} />
           </TabsContent>
         ))}
       </Tabs>

@@ -7,8 +7,11 @@ import { createLinkToken, exchangePublicToken } from '../../_authActions/plaid.a
 
 export default function PlaidLink({ user, variant }: PlaidLinkProps) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const onSuccess = useCallback<PlaidLinkOnSuccess>(
     async (public_token: string) => {
+      setIsLoading(true);
+
       try {
         await exchangePublicToken({
           publicToken: public_token,
@@ -17,6 +20,7 @@ export default function PlaidLink({ user, variant }: PlaidLinkProps) {
         router.push('/');
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     },
     [user]
@@ -43,7 +47,7 @@ export default function PlaidLink({ user, variant }: PlaidLinkProps) {
       {variant === 'primary' ? (
         <Button
           onClick={() => open()}
-          disabled={!ready}
+          disabled={!ready || isLoading}
           className='plaidlink-primary'
         >
           Connect Bank

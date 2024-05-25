@@ -6,15 +6,12 @@ export default function AuthLayout({ children }: PropsWithChildren) {
     <main className='flex min-h-screen w-full justify-between'>
       {children}
       <div className='auth-asset'>
-        <div>
-          {/* TODO: Replace with your own image */}
-          <Image
-            src='/icons/auth-image.svg'
-            alt='Auth Image'
-            width={500}
-            height={500}
-          />
-        </div>
+        <Image
+          src='/icons/auth-image.jpeg'
+          alt='Auth Image'
+          width={800}
+          height={800}
+        />
       </div>
     </main>
   );
