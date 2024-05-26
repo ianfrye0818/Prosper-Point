@@ -26,6 +26,7 @@ interface FormInputProps {
   description?: string;
   setValue?: UseFormSetValue<z.infer<typeof formSchema>>;
   accounts?: Account[];
+  accountIndex?: number;
   inputProps?: string;
   labelProps?: string;
   itemProps?: string;
@@ -97,7 +98,7 @@ function TransferTextAreaInput(
 
 function SelectBankInput(
   field: ControllerRenderProps<z.infer<typeof formSchema>>,
-  { label, description, accounts, setValue }: FormInputProps
+  { label, description, accounts, setValue, accountIndex }: FormInputProps
 ) {
   return (
     <FormItem className='border-t border-gray-200'>
@@ -112,9 +113,11 @@ function SelectBankInput(
           <FormControl>
             {accounts && (
               <BankDropdown
+                bankType={field.name as 'senderBank' | 'receiverBank'}
                 accounts={accounts}
                 setValue={setValue}
                 otherStyles='!w-full'
+                currentAccount={accounts[accountIndex ?? 0]}
               />
             )}
           </FormControl>

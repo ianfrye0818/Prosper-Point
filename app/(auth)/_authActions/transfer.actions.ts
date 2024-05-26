@@ -10,10 +10,10 @@ export async function createTransferTransaction(
   data: z.infer<typeof PAYMENT_TRANSFER_FORM_SCHEMA>
 ) {
   try {
-    const receiverAccountId = decryptId(data.sharableId);
-    if (!receiverAccountId) throw new Error('Invalid receiver account');
+    // const receiverAccountId = decryptId(data.sharableId);
+    // if (!receiverAccountId) throw new Error('Invalid receiver account');
 
-    const receiverBank = await getBankByAccountId({ accountId: receiverAccountId });
+    const receiverBank = await getBank({ documentId: data.receiverBank });
     const senderBank = await getBank({ documentId: data.senderBank });
     if (!receiverBank || !senderBank) throw new Error('Invalid sender or receiver bank');
 

@@ -14,30 +14,35 @@ import {
 } from '@/components/ui/select';
 import { formUrlQuery, formatAmount } from '@/lib/utils';
 
-export const BankDropdown = ({ accounts = [], setValue, otherStyles }: BankDropdownProps) => {
+export const BankDropdown = ({
+  accounts = [],
+  setValue,
+  otherStyles,
+  currentAccount,
+  bankType,
+}: BankDropdownProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [selected, setSeclected] = useState(accounts[0]);
+  const [selected, setSeclected] = useState(currentAccount || accounts[0]);
 
-  const handleBankChange = (id: string) => {
-    const account = accounts.find((account) => account.appwriteItemId === id)!;
-
+  const handleBankChange = (value: any) => {
+    const account = accounts.find((account) => account.appwriteItemId === value)!;
     setSeclected(account);
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: 'id',
-      value: id,
+      value,
     });
     router.push(newUrl, { scroll: false });
 
     if (setValue) {
-      setValue('senderBank', id);
+      setValue(bankType, value);
     }
   };
 
   return (
     <Select
-      defaultValue={selected.id}
+      defaultValue={selected.appwriteItemId}
       onValueChange={(value: any) => handleBankChange(value)}
     >
       <SelectTrigger

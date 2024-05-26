@@ -234,6 +234,8 @@ declare interface BankDropdownProps {
   accounts: Account[];
   setValue?: UseFormSetValue<any>;
   otherStyles?: string;
+  currentAccount?: Account;
+  bankType?: 'senderBank' | 'receiverBank';
 }
 
 declare interface BankTabItemProps {

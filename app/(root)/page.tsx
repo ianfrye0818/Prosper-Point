@@ -5,8 +5,9 @@ import RecentTransactions from './_components/_common/RecentTransactions';
 import { getPaginatedTransactionsAndTotalPages, getUserAccountData } from '@/lib/utils';
 
 export default async function Home({ searchParams: { id, page } }: SearchParamProps) {
-  const { user, accountsData, appwriteItemId, account, accounts, banks } =
-    await getUserAccountData();
+  const { user, accountsData, appwriteItemId, account, accounts, banks } = await getUserAccountData(
+    id
+  );
   const { currentPage } = getPaginatedTransactionsAndTotalPages({
     page,
     transactions: account.transactions,

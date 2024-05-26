@@ -5,7 +5,7 @@ import BankTabItem from './BankTabItem';
 import BankInfo from './BankInfo';
 import TransactionsTable from '../_transactionTable/TransactionsTable';
 import Pagination from './Pagination';
-import { ROWS_PER_PAGE } from '@/constants';
+import { getPaginatedTransactionsAndTotalPages } from '@/lib/utils';
 
 export default function RecentTransactions({
   accounts,
@@ -13,11 +13,10 @@ export default function RecentTransactions({
   page,
   transactions,
 }: RecentTransactionsProps) {
-  const totalPages = Math.ceil(transactions.length / ROWS_PER_PAGE);
-  const lastIndex = page * ROWS_PER_PAGE;
-  const firstIndex = lastIndex - ROWS_PER_PAGE;
-
-  const currentTransactions = transactions.slice(firstIndex, lastIndex);
+  const { currentTransactions, totalPages, currentPage } = getPaginatedTransactionsAndTotalPages({
+    page,
+    transactions,
+  });
 
   return (
     <section className='recent-transactions'>

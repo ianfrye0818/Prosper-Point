@@ -7,9 +7,10 @@ import {
 } from '@/lib/utils';
 import TransactionsTable from '../_components/_transactionTable/TransactionsTable';
 import Pagination from '../_components/_common/Pagination';
+import { BankDropdown } from '../payment-transfer/_components/_TransferForm/BankDropDown';
 
 export default async function TransactionHistory({ searchParams: { id, page } }: SearchParamProps) {
-  const { account, accountData } = await getUserAccountData();
+  const { accountData, account, accountsData } = await getUserAccountData(id);
 
   const { currentTransactions, totalPages, currentPage } = getPaginatedTransactionsAndTotalPages({
     page,
@@ -22,6 +23,10 @@ export default async function TransactionHistory({ searchParams: { id, page } }:
         <HeaderBox
           title='Transaction History'
           subtext='See your bank details and transactions'
+        />
+        <BankDropdown
+          accounts={accountsData}
+          currentAccount={account.data}
         />
       </div>
       <div className='space-y-6'>

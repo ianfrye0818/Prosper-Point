@@ -96,11 +96,12 @@ export function getPaginatedTransactionsAndTotalPages({
   page,
   transactions,
 }: {
-  page: string | string[] | undefined;
+  page: string | string[] | undefined | number;
   transactions: Transaction[];
 }) {
-  const currentPage = Number(page) || 1;
+  let currentPage = Number(page) || 1;
   const totalPages = Math.ceil(transactions.length / ROWS_PER_PAGE);
+  if (currentPage > totalPages) currentPage = totalPages;
   const lastIndex = currentPage * ROWS_PER_PAGE;
   const firstIndex = lastIndex - ROWS_PER_PAGE;
   const currentTransactions = transactions.slice(firstIndex, lastIndex);
@@ -108,7 +109,7 @@ export function getPaginatedTransactionsAndTotalPages({
   return { totalPages, currentTransactions, currentPage };
 }
 
-export async function getUserAccountData() {
+export async function getUserAccountData(id?: string | string[]) {
   try {
     const user = await getLoggedInUser();
     if (!user) throw new Error('No user found');
@@ -117,7 +118,7 @@ export async function getUserAccountData() {
     const banks = (await getBanks({ userId: user.$id })) as Bank[];
     if (!banks) throw new Error('No banks found');
     const accountsData = accounts.data as Account[];
-    const appwriteItemId = accountsData[0].appwriteItemId;
+    const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
     const account = await getAccount({ appwriteItemId });
     if (!account) throw new Error('No account found');
     const accountData = account?.data as Account;

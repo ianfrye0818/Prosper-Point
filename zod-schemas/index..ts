@@ -61,13 +61,24 @@ export const AUTH_FORM_SCHEMA = (type: 'sign-up' | 'sign-in') =>
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, 'Please enter a valid password'),
   });
 
+const validateAmount = z.string().refine(
+  (value) => {
+    const parsedNumber = parseFloat(value);
+    if (isNaN(parsedNumber) || parsedNumber < 1 || parsedNumber > 500.0) {
+      return false;
+    }
+    return true;
+  },
+  { message: 'Please enter a valid amount between $1 and $500.00' }
+);
+
 export const PAYMENT_TRANSFER_FORM_SCHEMA = z.object({
-  email: z.string().email('Please enter a valid email'),
+  email: z.union([z.string().email(), z.literal('')]),
   name: z
     .string()
-    .min(2, 'Please enter a valid name')
+    .min(2, 'Please enter a transaction name')
     .transform((val) => formatTitleCase(val)),
-  amount: z.string().min(4, 'Please enter a valid amount'),
+  amount: validateAmount,
   senderBank: z.string().min(4, 'Please enter a valid bank name'),
-  sharableId: z.string().min(4, 'Please enter a valid id'),
+  receiverBank: z.string().min(4, 'Please enter a valid bank name'),
 });
