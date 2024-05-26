@@ -15,8 +15,8 @@ import { signIn, signUp } from '@/app/(auth)/_authActions/user.actions';
 import PlaidLink from './PlaidLink';
 import ZodFormFieldInput from './ZodAuthFormFieldInput';
 
-export default function AuthForm({ type, user: loggedInUser }: AuthFormProps) {
-  const [user, setUser] = useState(loggedInUser);
+export default function AuthForm({ type }: AuthFormProps) {
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 

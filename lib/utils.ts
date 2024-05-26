@@ -3,6 +3,7 @@ import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
 import { getAccount, getAccounts, getBanks } from '@/app/(root)/_actions/bank.actions';
 import { ROWS_PER_PAGE } from '@/constants';
 import { type ClassValue, clsx } from 'clsx';
+import { redirect } from 'next/navigation';
 import qs from 'query-string';
 import { twMerge } from 'tailwind-merge';
 
@@ -112,7 +113,7 @@ export function getPaginatedTransactionsAndTotalPages({
 export async function getUserAccountData(id?: string | string[]) {
   try {
     const user = await getLoggedInUser();
-    if (!user) throw new Error('No user found');
+    if (!user) redirect('/sign-in');
 
     const accounts = (await getAccounts({ userId: user.$id })) as GetAccountsData;
     if (!accounts) throw new Error('No accounts found');

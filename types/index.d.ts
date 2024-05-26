@@ -227,7 +227,6 @@ declare type AppwriteUser = {
 };
 declare interface AuthFormProps {
   type: 'sign-in' | 'sign-up';
-  user?: User;
 }
 
 declare interface BankDropdownProps {

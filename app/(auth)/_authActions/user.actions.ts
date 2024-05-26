@@ -93,11 +93,13 @@ export async function signOut() {
   }
 }
 
-export async function getLoggedInUser() {
+export async function getLoggedInUser(): Promise<User | null> {
   try {
     const { account } = await createSessionClient();
     const userAccount = await account.get();
+    if (!userAccount) throw new Error('User account not found');
     const user = (await getDataBaseUser({ userId: userAccount.$id })) as User;
+    if (!user) throw new Error('User not found');
     return parseStringify(user);
   } catch (error) {
     return null;
