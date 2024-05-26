@@ -50,10 +50,12 @@ export default async function TransactionHistory({ searchParams: { id, page } }:
           {account && currentTransactions && currentTransactions.length > 0 ? (
             <>
               <TransactionsTable transactions={currentTransactions} />
-              <Pagination
-                page={currentPage}
-                totalPages={totalPages}
-              />
+              {totalPages > 1 && (
+                <Pagination
+                  page={currentPage}
+                  totalPages={totalPages}
+                />
+              )}
             </>
           ) : (
             ''
