@@ -90,7 +90,6 @@ export async function createTransfer({
       },
     };
     return await dwollaClient.post('transfers', requestBody).then((res) => {
-      console.log({ res });
       return res.headers.get('location');
     });
   } catch (error) {

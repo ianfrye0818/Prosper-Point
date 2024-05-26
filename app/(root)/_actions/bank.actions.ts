@@ -63,15 +63,17 @@ export async function getAccount({ appwriteItemId }: GetAccountProps) {
     const transferTransactionsData = await getTransactionsByBankId({ bankId: bank.$id });
 
     const transferTransactions = transferTransactionsData.documents.map(
-      (transferData: Transaction) => ({
-        id: transferData.$id,
-        name: transferData.name,
-        amount: transferData.amount,
-        date: transferData.date,
-        paymentChannel: transferData.channel,
-        category: transferData.category,
-        type: transferData.senderBankId === bank.$id ? 'debit' : 'credit',
-      })
+      (transferData: Transaction) => {
+        return {
+          id: transferData.$id,
+          name: transferData.name,
+          amount: transferData.amount,
+          date: transferData.$createdAt,
+          paymentChannel: transferData.channel,
+          category: transferData.category,
+          type: transferData.senderBankId === bank.$id ? 'debit' : 'credit',
+        };
+      }
     );
 
     const institution = (await getInstitution({
