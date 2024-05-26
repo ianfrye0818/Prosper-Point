@@ -1,20 +1,20 @@
 import React from 'react';
 import HeaderBox from '../_components/_common/HeaderBox';
-import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
-import { getAccount, getAccounts, getBanks } from '../_actions/bank.actions';
-import { formatAmount } from '@/lib/utils';
+import {
+  formatAmount,
+  getPaginatedTransactionsAndTotalPages,
+  getUserAccountData,
+} from '@/lib/utils';
 import TransactionsTable from '../_components/_transactionTable/TransactionsTable';
+import Pagination from '../_components/_common/Pagination';
 
 export default async function TransactionHistory({ searchParams: { id, page } }: SearchParamProps) {
-  const user = (await getLoggedInUser()) as User;
+  const { account, accountData } = await getUserAccountData();
 
-  const accounts = (await getAccounts({ userId: user.$id })) as GetAccountsData;
-  if (!accounts) return null;
-
-  const accountsData = accounts.data as Account[];
-  const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
-  const account = await getAccount({ appwriteItemId });
-  const accountData = account?.data as Account;
+  const { currentTransactions, totalPages, currentPage } = getPaginatedTransactionsAndTotalPages({
+    page,
+    transactions: account!.transactions,
+  });
 
   return (
     <section className='transactions'>
@@ -42,8 +42,14 @@ export default async function TransactionHistory({ searchParams: { id, page } }:
           </div>
         </div>
         <section className='flex w-full flex-col gap-6'>
-          {account && account.transactions.length > 0 ? (
-            <TransactionsTable transactions={account.transactions} />
+          {account && currentTransactions && currentTransactions.length > 0 ? (
+            <>
+              <TransactionsTable transactions={currentTransactions} />
+              <Pagination
+                page={currentPage}
+                totalPages={totalPages}
+              />
+            </>
           ) : (
             ''
           )}

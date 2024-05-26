@@ -1,13 +1,11 @@
 import React from 'react';
 import HeaderBox from '../_components/_common/HeaderBox';
 import TransferForm from './_components/_TransferForm/TransferForm';
-import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
-import { getAccounts } from '../_actions/bank.actions';
+import { getUserAccountData } from '@/lib/utils';
 
 export default async function PaymentTranser() {
-  const user = (await getLoggedInUser()) as User;
+  const { accounts } = await getUserAccountData();
 
-  const accounts = (await getAccounts({ userId: user.$id })) as GetAccountsData;
   if (!accounts) return null;
 
   return (

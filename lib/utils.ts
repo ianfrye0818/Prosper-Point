@@ -1,4 +1,7 @@
 /* eslint-disable no-prototype-builtins */
+import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
+import { getAccount, getAccounts, getBanks } from '@/app/(root)/_actions/bank.actions';
+import { ROWS_PER_PAGE } from '@/constants';
 import { type ClassValue, clsx } from 'clsx';
 import qs from 'query-string';
 import { twMerge } from 'tailwind-merge';
@@ -87,6 +90,42 @@ export function formUrlQuery({ params, key, value }: UrlQueryParams) {
     },
     { skipNull: true }
   );
+}
+
+export function getPaginatedTransactionsAndTotalPages({
+  page,
+  transactions,
+}: {
+  page: string | string[] | undefined;
+  transactions: Transaction[];
+}) {
+  const currentPage = Number(page) || 1;
+  const totalPages = Math.ceil(transactions.length / ROWS_PER_PAGE);
+  const lastIndex = currentPage * ROWS_PER_PAGE;
+  const firstIndex = lastIndex - ROWS_PER_PAGE;
+  const currentTransactions = transactions.slice(firstIndex, lastIndex);
+
+  return { totalPages, currentTransactions, currentPage };
+}
+
+export async function getUserAccountData() {
+  try {
+    const user = await getLoggedInUser();
+    if (!user) throw new Error('No user found');
+    const accounts = (await getAccounts({ userId: user.$id })) as GetAccountsData;
+    if (!accounts) throw new Error('No accounts found');
+    const banks = (await getBanks({ userId: user.$id })) as Bank[];
+    if (!banks) throw new Error('No banks found');
+    const accountsData = accounts.data as Account[];
+    const appwriteItemId = accountsData[0].appwriteItemId;
+    const account = await getAccount({ appwriteItemId });
+    if (!account) throw new Error('No account found');
+    const accountData = account?.data as Account;
+    return { user, accountsData, appwriteItemId, accountData, account, accounts, banks };
+  } catch (error) {
+    console.log(['getUserAccountData'], error);
+    throw error;
+  }
 }
 
 export function getAccountTypeColors(type: AccountTypes) {

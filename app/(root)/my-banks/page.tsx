@@ -1,14 +1,10 @@
 import React from 'react';
 import HeaderBox from '../_components/_common/HeaderBox';
-import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
-import { getAccounts } from '../_actions/bank.actions';
 import BankCard from '../_components/_common/BankCard';
+import { getUserAccountData } from '@/lib/utils';
 
 export default async function MyBanks() {
-  const user = (await getLoggedInUser()) as User;
-
-  const accounts = (await getAccounts({ userId: user.$id })) as GetAccountsData;
-
+  const { accounts, user } = await getUserAccountData();
   if (!accounts) return null;
 
   return (

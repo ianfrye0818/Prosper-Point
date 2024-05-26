@@ -23,6 +23,7 @@ export const sidebarLinks = [
 
 // good_user / good_password - Bank of America
 export const TEST_USER_ID = '6627ed3d00267aa6fa3e';
+export const ROWS_PER_PAGE = 10;
 
 // custom_user -> Chase Bank
 // export const TEST_ACCESS_TOKEN =
