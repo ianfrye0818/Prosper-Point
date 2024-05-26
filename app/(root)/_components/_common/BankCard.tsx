@@ -4,7 +4,6 @@ import { formatAmount } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import Copy from './Copy';
 
 export default function BankCard({ account, userName, showBalance = true }: CreditCardProps) {
   return (
@@ -56,7 +55,6 @@ export default function BankCard({ account, userName, showBalance = true }: Cred
           className='absolute top-0 left-0'
         />
       </Link>
-      {showBalance && <Copy title={account.sharableId} />}
     </div>
   );
 }

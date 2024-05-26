@@ -15,7 +15,8 @@ export default async function MyBanks() {
           subtext='Manage your banking activities'
         />
         <div className='space-y-4'>
-          <h2 className='header-2'>Your Cards</h2>
+          <h2 className='text-2xl font-bold'>Your Cards</h2>
+          <h3 className='text-[16px]'>Click on a card to see full account details</h3>
           <div className='flex flex-wrap gap-6'>
             {accounts &&
               accounts.data.map((account) => (
