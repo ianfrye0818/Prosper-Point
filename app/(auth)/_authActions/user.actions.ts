@@ -191,7 +191,7 @@ export async function getUserAccountData(id?: string | string[]) {
 
     return { user, accountsData, appwriteItemId, accountData, account, accounts, banks };
   } catch (error) {
-    console.log(['getUserAccountData'], error);
+    console.error(['getUserAccountData'], error);
     throw error; //rethrow error for the frontend to handle
   }
 }

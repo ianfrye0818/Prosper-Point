@@ -28,16 +28,16 @@ export const BankDropdown = ({
   const handleBankChange = (value: any) => {
     const account = accounts.find((account) => account.appwriteItemId === value)!;
     setSeclected(account);
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: 'id',
-      value,
-      resetPage: true,
-    });
-    router.push(newUrl, { scroll: false });
-
     if (setValue) {
       setValue(bankType, value);
+    } else {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'id',
+        value,
+        resetPage: setValue ? true : false,
+      });
+      router.push(newUrl, { scroll: false });
     }
   };
 

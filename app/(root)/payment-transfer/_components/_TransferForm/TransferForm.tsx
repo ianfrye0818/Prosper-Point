@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { InputType } from '@/types/enums';
 import { Loader2 } from 'lucide-react';
 import { createTransferTransaction } from '@/app/(auth)/_authActions/transfer.actions';
-import { set } from 'date-fns';
+import { formatDistance, set } from 'date-fns';
 
 export default function TransferForm({ accounts }: PaymentTransferFormProps) {
   const router = useRouter();
@@ -42,8 +42,7 @@ export default function TransferForm({ accounts }: PaymentTransferFormProps) {
       return;
     }
     try {
-      const transfer = await createTransferTransaction(data);
-      console.log(transfer);
+      await createTransferTransaction(data);
       router.push('/');
       form.reset();
     } catch (error) {
@@ -53,10 +52,6 @@ export default function TransferForm({ accounts }: PaymentTransferFormProps) {
       //throw toast error here if needed
     }
   }
-
-  console.log(form.getValues());
-  console.log(isLoading);
-
   return (
     <Form {...form}>
       <form

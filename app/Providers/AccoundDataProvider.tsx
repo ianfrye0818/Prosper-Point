@@ -45,7 +45,6 @@ export default function AccountDataProvider({ children }: { children: ReactNode 
       }
     };
     getAccountData();
-    console.log('rendering');
   }, [id]);
 
   if (isLoading)
