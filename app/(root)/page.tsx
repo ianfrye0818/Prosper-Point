@@ -7,10 +7,7 @@ import { getPaginatedTransactionsAndTotalPages } from '@/lib/utils';
 import { useUserAccountData } from '../Providers/AccoundDataProvider';
 
 export default function Home({ searchParams: { id, page } }: SearchParamProps) {
-  // // const { user, accountsData, appwriteItemId, account, accounts, banks } = await getUserAccountData(
-  // //   id
-  // // );
-  const { userAccountData, error, isLoading } = useUserAccountData();
+  const { userAccountData } = useUserAccountData();
 
   const { user, accountsData, appwriteItemId, account, accounts, banks } = userAccountData!;
   const { currentPage } = getPaginatedTransactionsAndTotalPages({

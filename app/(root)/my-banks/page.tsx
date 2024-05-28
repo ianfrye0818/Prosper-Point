@@ -1,26 +1,10 @@
 'use client';
-import React from 'react';
 import HeaderBox from '../_components/_common/HeaderBox';
 import BankCard from '../_components/_common/BankCard';
-// import { getUserAccountData } from '@/app/(auth)/_authActions/user.actions';
 import { useUserAccountData } from '@/app/Providers/AccoundDataProvider';
 
 export default function MyBanks() {
-  const { error, isLoading, userAccountData } = useUserAccountData();
-
-  if (isLoading)
-    return (
-      <div className='flex flex-col h-screen w-full justify-center items-center'>
-        <p className='text-[30px]'>Loading....</p>
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className='flex flex-col h-screen w-full justify-center items-center'>
-        <p className='text-[30px]'>Error: {error}</p>
-      </div>
-    );
+  const { userAccountData } = useUserAccountData();
 
   const { user, accounts } = userAccountData!;
 

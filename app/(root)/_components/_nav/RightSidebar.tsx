@@ -1,6 +1,3 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
 import BankCard from '../_common/BankCard';
 import PlaidLink from '@/app/(auth)/_components/_authform/PlaidLink';
 import { countTransactionCategories } from '@/lib/utils';

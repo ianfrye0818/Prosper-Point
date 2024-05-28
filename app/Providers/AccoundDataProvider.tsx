@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  useEffect,
-  useState,
-  createContext,
-  useContext,
-  Dispatch,
-  SetStateAction,
-  ReactNode,
-} from 'react';
+import { useEffect, useState, createContext, useContext, ReactNode } from 'react';
 import { getUserAccountData } from '../(auth)/_authActions/user.actions';
 import { useSearchParams } from 'next/navigation';
 import { ThreeDots } from 'react-loader-spinner';
@@ -25,7 +17,6 @@ interface UserAccountData {
 
 interface UserAccountDataContextType {
   accountData: UserAccountData | null;
-  setAccountData: Dispatch<SetStateAction<UserAccountData | null>>;
   isLoading: boolean;
   error: string | null;
 }
@@ -75,7 +66,7 @@ export default function AccountDataProvider({ children }: { children: ReactNode 
     );
 
   return (
-    <UserAccountDataContext.Provider value={{ accountData, setAccountData, isLoading, error }}>
+    <UserAccountDataContext.Provider value={{ accountData, isLoading, error }}>
       {children}
     </UserAccountDataContext.Provider>
   );
@@ -87,6 +78,6 @@ export function useUserAccountData() {
     throw new Error('useUserAccountData must be used within a UserAccountDataProvider');
   }
 
-  const { accountData: userAccountData, setAccountData, isLoading, error } = context;
-  return { userAccountData, setAccountData, isLoading, error };
+  const { accountData: userAccountData, isLoading, error } = context;
+  return { userAccountData, isLoading, error };
 }

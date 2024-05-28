@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import HeaderBox from '../_components/_common/HeaderBox';
 import TransferForm from './_components/_TransferForm/TransferForm';
 import { useUserAccountData } from '@/app/Providers/AccoundDataProvider';

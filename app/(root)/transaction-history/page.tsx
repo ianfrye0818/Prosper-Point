@@ -1,20 +1,14 @@
 'use client';
-import React from 'react';
+
 import HeaderBox from '../_components/_common/HeaderBox';
 import { formatAmount, getPaginatedTransactionsAndTotalPages } from '@/lib/utils';
 import TransactionsTable from '../_components/_transactionTable/TransactionsTable';
 import Pagination from '../_components/_common/Pagination';
 import { BankDropdown } from '../payment-transfer/_components/_TransferForm/BankDropDown';
-import { getUserAccountData } from '@/app/(auth)/_authActions/user.actions';
 import { useUserAccountData } from '@/app/Providers/AccoundDataProvider';
 
-export default function TransactionHistory({ searchParams: { id, page } }: SearchParamProps) {
-  // const { accountData, account, accountsData } = await getUserAccountData(id);
-
-  const { userAccountData, setAccountData, isLoading, error } = useUserAccountData();
-
-  // if (isLoading) return null;
-  // if (error) return <p>{error}</p>;
+export default function TransactionHistory({ searchParams: { page } }: SearchParamProps) {
+  const { userAccountData } = useUserAccountData();
 
   const { accountData, account, accountsData } = userAccountData!;
 
