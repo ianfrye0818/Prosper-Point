@@ -1,11 +1,12 @@
+'use client';
 import React from 'react';
 import HeaderBox from '../_components/_common/HeaderBox';
 import TransferForm from './_components/_TransferForm/TransferForm';
-import { getUserAccountData } from '@/app/(auth)/_authActions/user.actions';
+import { useUserAccountData } from '@/app/Providers/AccoundDataProvider';
 
-export default async function PaymentTranser() {
-  const { accounts } = await getUserAccountData();
-
+export default function PaymentTranser() {
+  const { userAccountData } = useUserAccountData();
+  const { accounts } = userAccountData!;
   if (!accounts) return null;
 
   return (

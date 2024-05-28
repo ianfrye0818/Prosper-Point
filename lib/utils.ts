@@ -77,12 +77,17 @@ interface UrlQueryParams {
   params: string;
   key: string;
   value: string;
+  resetPage?: boolean;
 }
 
-export function formUrlQuery({ params, key, value }: UrlQueryParams) {
+export function formUrlQuery({ params, key, value, resetPage = true }: UrlQueryParams) {
   const currentUrl = qs.parse(params);
 
   currentUrl[key] = value;
+
+  if (resetPage) {
+    currentUrl.page = '1';
+  }
 
   return qs.stringifyUrl(
     {

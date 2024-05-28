@@ -14,6 +14,8 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
       params: searchParams.toString(),
       value: pageNumber.toString(),
       key: 'page',
+
+      resetPage: false,
     });
     router.push(newUrl, { scroll: false });
   }

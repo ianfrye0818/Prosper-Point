@@ -13,8 +13,8 @@ export default function TransactionHistory({ searchParams: { id, page } }: Searc
 
   const { userAccountData, setAccountData, isLoading, error } = useUserAccountData();
 
-  if (isLoading) return null;
-  if (error) return <p>{error}</p>;
+  // if (isLoading) return null;
+  // if (error) return <p>{error}</p>;
 
   const { accountData, account, accountsData } = userAccountData!;
 
@@ -22,8 +22,6 @@ export default function TransactionHistory({ searchParams: { id, page } }: Searc
     page,
     transactions: account!.transactions,
   });
-
-  console.log({ isLoading });
 
   return (
     <section className='transactions'>

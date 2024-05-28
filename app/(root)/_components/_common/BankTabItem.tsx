@@ -16,6 +16,7 @@ export default function BankTabItem({ account, appwriteItemId }: BankTabItemProp
       params: searchParams.toString(),
       key: 'id',
       value: account.appwriteItemId,
+      resetPage: true,
     });
     router.push(newUrl, { scroll: false });
   }

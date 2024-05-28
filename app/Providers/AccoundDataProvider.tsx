@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { getUserAccountData } from '../(auth)/_authActions/user.actions';
 import { useSearchParams } from 'next/navigation';
+import { ThreeDots } from 'react-loader-spinner';
 
 interface UserAccountData {
   user: User;
@@ -40,21 +41,38 @@ export default function AccountDataProvider({ children }: { children: ReactNode 
   const id = params.get('id') || '';
 
   useEffect(() => {
-    console.log({ isLoading });
     const getAccountData = async () => {
+      setIsLoading(true);
       try {
         const data = await getUserAccountData(id);
         setAccountData(data);
+        setIsLoading(false);
       } catch (err) {
         console.error('Failed to fetch account data', err);
         setError('Failed to fetch account data');
-      } finally {
         setIsLoading(false);
       }
     };
     getAccountData();
     console.log('rendering');
   }, [id]);
+
+  if (isLoading)
+    return (
+      <div className='flex flex-col h-screen w-full justify-center items-center'>
+        <ThreeDots
+          color='#0179FE'
+          height={100}
+          width={100}
+        />
+      </div>
+    );
+  if (error)
+    return (
+      <div className='flex flex-col h-screen w-full justify-center items-center'>
+        <p className='text-[30px]'>Error: {error}</p>
+      </div>
+    );
 
   return (
     <UserAccountDataContext.Provider value={{ accountData, setAccountData, isLoading, error }}>

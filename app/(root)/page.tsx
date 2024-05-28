@@ -12,18 +12,6 @@ export default function Home({ searchParams: { id, page } }: SearchParamProps) {
   // // );
   const { userAccountData, error, isLoading } = useUserAccountData();
 
-  if (isLoading)
-    return (
-      <div className='flex flex-col h-screen w-full justify-center items-center'>
-        <p className='text-[30px]'>Loading....</p>
-      </div>
-    );
-  if (error)
-    return (
-      <div className='flex flex-col h-screen w-full justify-center items-center'>
-        <p className='text-[30px]'>Error: {error}</p>
-      </div>
-    );
   const { user, accountsData, appwriteItemId, account, accounts, banks } = userAccountData!;
   const { currentPage } = getPaginatedTransactionsAndTotalPages({
     page,

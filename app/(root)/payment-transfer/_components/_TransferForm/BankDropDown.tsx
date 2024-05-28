@@ -39,6 +39,7 @@ export const BankDropdown = ({
       params: searchParams.toString(),
       key: 'id',
       value,
+      resetPage: true,
     });
     router.push(newUrl, { scroll: false });
 
