@@ -23,7 +23,7 @@ export default function TransferForm({ accounts }: PaymentTransferFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      memo: '',
       name: 'Online Transfer',
       amount: '',
       senderBank: accounts[0].appwriteItemId,
@@ -95,18 +95,12 @@ export default function TransferForm({ accounts }: PaymentTransferFormProps) {
           label='Transfer Name'
         />
 
-        <div className='payment-transfer_form-details'>
-          <h2 className='text-18 font-semibold text-gray-900'>Bank account details</h2>
-          <p className='text-16 font-normal text-gray-600'>
-            Enter the bank account details of the recipient
-          </p>
-        </div>
-
         <ZodTransferFormField
+          type={InputType.TEXTAREA}
           control={form.control}
-          name='email'
-          label={"Recipient's Email"}
-          placeholder='example@example.com'
+          name='memo'
+          label={'Memo (Optional)'}
+          placeholder='Write a note here...'
         />
 
         <ZodTransferFormField

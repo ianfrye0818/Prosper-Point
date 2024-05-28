@@ -1,3 +1,4 @@
+'use clinet';
 import Link from 'next/link';
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';

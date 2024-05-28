@@ -1,5 +1,6 @@
 'use server';
 
+import { getLoggedInUser } from '@/app/(auth)/_authActions/user.actions';
 import { createAdminClient } from '@/lib/_actions/appwrite.actions';
 import { parseStringify } from '@/lib/utils';
 import { ID, Query } from 'node-appwrite';
@@ -10,6 +11,7 @@ const TRANSACTION_COLLECTION_ID = process.env.APPWRITE_TRANSACTION_COLLECTION_ID
 export async function createTransaction(transaction: CreateTransactionProps) {
   try {
     const { database } = await createAdminClient();
+    const user = await getLoggedInUser();
 
     const newTransaction = await database.createDocument(
       DATABASE_ID,
@@ -18,6 +20,8 @@ export async function createTransaction(transaction: CreateTransactionProps) {
       {
         channel: 'online',
         category: 'Transfer',
+        email: user?.email ?? '',
+
         ...transaction,
       }
     );

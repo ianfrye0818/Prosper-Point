@@ -73,7 +73,7 @@ const validateAmount = z.string().refine(
 );
 
 export const PAYMENT_TRANSFER_FORM_SCHEMA = z.object({
-  email: z.union([z.string().email(), z.literal('')]),
+  memo: z.string().optional(),
   name: z
     .string()
     .min(2, 'Please enter a transaction name')

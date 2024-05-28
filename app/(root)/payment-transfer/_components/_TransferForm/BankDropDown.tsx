@@ -13,6 +13,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { formUrlQuery, formatAmount } from '@/lib/utils';
+import { useUserAccountData } from '@/app/Providers/AccoundDataProvider';
 
 export const BankDropdown = ({
   accounts = [],
@@ -24,9 +25,15 @@ export const BankDropdown = ({
   const searchParams = useSearchParams();
   const router = useRouter();
   const [selected, setSeclected] = useState(currentAccount || accounts[0]);
+  const { setAccountData, userAccountData } = useUserAccountData();
 
   const handleBankChange = (value: any) => {
     const account = accounts.find((account) => account.appwriteItemId === value)!;
+    setAccountData((prev) => ({
+      ...prev!,
+      accountData: account,
+      appwriteItemId: account.appwriteItemId,
+    }));
     setSeclected(account);
     const newUrl = formUrlQuery({
       params: searchParams.toString(),

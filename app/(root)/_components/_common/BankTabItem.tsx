@@ -11,7 +11,7 @@ export default function BankTabItem({ account, appwriteItemId }: BankTabItemProp
 
   const isActive = appwriteItemId === account.appwriteItemId;
 
-  function handleBankChange() {
+  async function handleBankChange() {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: 'id',

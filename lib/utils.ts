@@ -110,33 +110,6 @@ export function getPaginatedTransactionsAndTotalPages({
   return { totalPages, currentTransactions, currentPage };
 }
 
-export async function getUserAccountData(id?: string | string[]) {
-  try {
-    const user = await getLoggedInUser();
-    if (!user) redirect('/sign-in');
-
-    const accounts = (await getAccounts({ userId: user.$id })) as GetAccountsData;
-    if (!accounts) throw new Error('No accounts found');
-
-    const banks = (await getBanks({ userId: user.$id })) as Bank[];
-    if (!banks) throw new Error('No banks found');
-
-    const accountsData = accounts.data as Account[];
-
-    const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
-
-    const account = (await getAccount({ appwriteItemId })) as GetAccountData;
-    if (!account) throw new Error('No account found');
-
-    const accountData = account.data as Account;
-
-    return { user, accountsData, appwriteItemId, accountData, account, accounts, banks };
-  } catch (error) {
-    console.log(['getUserAccountData'], error);
-    throw error; //rethrow error for the frontend to handle
-  }
-}
-
 export function getAccountTypeColors(type: AccountTypes) {
   switch (type) {
     case 'depository':

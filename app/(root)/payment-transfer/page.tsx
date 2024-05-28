@@ -1,7 +1,7 @@
 import React from 'react';
 import HeaderBox from '../_components/_common/HeaderBox';
 import TransferForm from './_components/_TransferForm/TransferForm';
-import { getUserAccountData } from '@/lib/utils';
+import { getUserAccountData } from '@/app/(auth)/_authActions/user.actions';
 
 export default async function PaymentTranser() {
   const { accounts } = await getUserAccountData();

@@ -24,7 +24,6 @@ export async function getAccounts({ userId }: GetAccountsProps) {
         const institution = await getInstitution({
           institutionId: accountsResponse.data.item.institution_id!,
         });
-
         const account: Account = {
           id: accountData.account_id,
           availableBalance: accountData.balances.available!,
